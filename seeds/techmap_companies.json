@@ -1,0 +1,2108 @@
+{
+ "source": "Israeli Tech Map - https://github.com/mluggy/techmap (ODbL v1.0, by Michael Lugassy)",
+ "built_on": "2026-10-01",
+ "sizes": {
+  "xs": "1-10",
+  "s": "11-50",
+  "m": "51-200",
+  "l": "201-1,000",
+  "xl": "1,001+"
+ },
+ "companies": [
+  {
+   "name": "Aitech",
+   "industry": "Aerospace",
+   "size": "l",
+   "cities": [
+    "כפר סבא"
+   ],
+   "ats": "comeet",
+   "slug": "aitechsystems",
+   "uid": "88.004",
+   "careers_url": "https://www.comeet.com/jobs/aitechsystems/88.004"
+  },
+  {
+   "name": "Gett",
+   "industry": "Automotive",
+   "size": "l",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "gett",
+   "uid": "A0.002",
+   "careers_url": "https://www.comeet.com/jobs/gett/A0.002"
+  },
+  {
+   "name": "Orpak Systems",
+   "industry": "E-commerce & Retail",
+   "size": "l",
+   "cities": [
+    "יקום"
+   ],
+   "ats": "comeet",
+   "slug": "Orpak",
+   "uid": "65.001",
+   "careers_url": "https://www.comeet.com/jobs/Orpak/65.001"
+  },
+  {
+   "name": "Surecomp",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "כפר סבא"
+   ],
+   "ats": "comeet",
+   "slug": "Surecomp",
+   "uid": "24.00E",
+   "careers_url": "https://www.comeet.com/jobs/Surecomp/24.00E"
+  },
+  {
+   "name": "SodaStream",
+   "industry": "E-commerce & Retail",
+   "size": "l",
+   "cities": [
+    "כפר סבא"
+   ],
+   "ats": "comeet",
+   "slug": "sodastream",
+   "uid": "40.008",
+   "careers_url": "https://www.comeet.com/jobs/sodastream/40.008"
+  },
+  {
+   "name": "KMS Lighthouse",
+   "industry": "Productivity",
+   "size": "m",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "kmslh",
+   "uid": "97.008",
+   "careers_url": "https://www.comeet.com/jobs/kmslh/97.008"
+  },
+  {
+   "name": "Ceragon Networks",
+   "industry": "Telecommunications",
+   "size": "l",
+   "cities": [
+    "ראש העין"
+   ],
+   "ats": "comeet",
+   "slug": "Ceragon",
+   "uid": "D3.003",
+   "careers_url": "https://www.comeet.com/jobs/Ceragon/D3.003"
+  },
+  {
+   "name": "Novidea Software",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "נתניה"
+   ],
+   "ats": "comeet",
+   "slug": "novidea",
+   "uid": "E5.00A",
+   "careers_url": "https://www.comeet.com/jobs/novidea/E5.00A"
+  },
+  {
+   "name": "Insightec",
+   "industry": "Health",
+   "size": "l",
+   "cities": [
+    "טירת כרמל"
+   ],
+   "ats": "greenhouse",
+   "slug": "insightec"
+  },
+  {
+   "name": "Cellebrite",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "Cellebrite",
+   "uid": "C3.00F",
+   "careers_url": "https://www.comeet.com/jobs/Cellebrite/C3.00F"
+  },
+  {
+   "name": "Personetics Technologies",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "גבעתיים"
+   ],
+   "ats": "comeet",
+   "slug": "personetics",
+   "uid": "83.00A",
+   "careers_url": "https://www.comeet.com/jobs/personetics/83.00A"
+  },
+  {
+   "name": "GigaSpaces Technologies",
+   "industry": "AI/ML",
+   "size": "m",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "gigaspaces",
+   "uid": "C5.00E",
+   "careers_url": "https://www.comeet.com/jobs/gigaspaces/C5.00E"
+  },
+  {
+   "name": "CEVA",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "ceva",
+   "uid": "76.005",
+   "careers_url": "https://www.comeet.com/jobs/ceva/76.005"
+  },
+  {
+   "name": "Browzwear",
+   "industry": "AR/VR",
+   "size": "l",
+   "cities": [
+    "הוד השרון"
+   ],
+   "ats": "comeet",
+   "slug": "browzwear",
+   "uid": "03.000",
+   "careers_url": "https://www.comeet.com/jobs/browzwear/03.000"
+  },
+  {
+   "name": "SeatGeek",
+   "industry": "E-commerce & Retail",
+   "size": "l",
+   "cities": [
+    "פארק תעשיות בר-לב"
+   ],
+   "ats": "greenhouse",
+   "slug": "seatgeek"
+  },
+  {
+   "name": "Final",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "final",
+   "uid": "C0.009",
+   "careers_url": "https://www.comeet.com/jobs/final/C0.009"
+  },
+  {
+   "name": "BIRD Aerosystems",
+   "industry": "Aerospace",
+   "size": "m",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "birdaero",
+   "uid": "97.006",
+   "careers_url": "https://www.comeet.com/jobs/birdaero/97.006"
+  },
+  {
+   "name": "Cardo Systems",
+   "industry": "Telecommunications",
+   "size": "m",
+   "cities": [
+    "רעננה"
+   ],
+   "ats": "comeet",
+   "slug": "cardosystems",
+   "uid": "F2.003",
+   "careers_url": "https://www.comeet.com/jobs/cardosystems/F2.003"
+  },
+  {
+   "name": "Tikal",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "תל אביב"
+   ],
+   "ats": "comeet",
+   "slug": "tikalk",
+   "uid": "68.00C",
+   "careers_url": "https://www.comeet.com/jobs/tikalk/68.00C"
+  },
+  {
+   "name": "Atera Networks",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "atera",
+   "uid": "63.00B",
+   "careers_url": "https://www.comeet.com/jobs/atera/63.00B"
+  },
+  {
+   "name": "Amobee",
+   "industry": "AdTech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "nexxen"
+  },
+  {
+   "name": "Netafim",
+   "industry": "Sustainable Technology",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "netafim",
+   "uid": "B7.002",
+   "careers_url": "https://www.comeet.com/jobs/netafim/B7.002"
+  },
+  {
+   "name": "Panaya",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "הוד השרון"
+   ],
+   "ats": "comeet",
+   "slug": "panaya",
+   "uid": "61.00C",
+   "careers_url": "https://www.comeet.com/jobs/panaya/61.00C"
+  },
+  {
+   "name": "Thrive DX",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "thrivedx",
+   "uid": "A7.009",
+   "careers_url": "https://www.comeet.com/jobs/thrivedx/A7.009"
+  },
+  {
+   "name": "Checkmarx",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "Ramat Gan"
+   ],
+   "ats": "comeet",
+   "slug": "checkmarx",
+   "uid": "C0.008",
+   "careers_url": "https://www.comeet.com/jobs/checkmarx/C0.008"
+  },
+  {
+   "name": "Skai",
+   "industry": "AdTech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "skai",
+   "uid": "22.00A",
+   "careers_url": "https://www.comeet.com/jobs/skai/22.00A"
+  },
+  {
+   "name": "SolarEdge Technologies",
+   "industry": "Sustainable Technology",
+   "size": "l",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "SolarEdge",
+   "uid": "71.00A",
+   "careers_url": "https://www.comeet.com/jobs/SolarEdge/71.00A"
+  },
+  {
+   "name": "Taboola",
+   "industry": "AdTech",
+   "size": "l",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "greenhouse",
+   "slug": "taboola"
+  },
+  {
+   "name": "LiveU",
+   "industry": "Telecommunications",
+   "size": "l",
+   "cities": [
+    "כפר סבא"
+   ],
+   "ats": "comeet",
+   "slug": "liveu",
+   "uid": "90.00C",
+   "careers_url": "https://www.comeet.com/jobs/liveu/90.00C"
+  },
+  {
+   "name": "Driivz",
+   "industry": "Automotive",
+   "size": "m",
+   "cities": [
+    "הוד השרון"
+   ],
+   "ats": "comeet",
+   "slug": "driivz",
+   "uid": "C4.00B",
+   "careers_url": "https://www.comeet.com/jobs/driivz/C4.00B"
+  },
+  {
+   "name": "Waterfall Security Solutions",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "ראש העין"
+   ],
+   "ats": "comeet",
+   "slug": "waterfall-security",
+   "uid": "C7.009",
+   "careers_url": "https://www.comeet.com/jobs/waterfall-security/C7.009"
+  },
+  {
+   "name": "eToro",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "etoro",
+   "uid": "41.009",
+   "careers_url": "https://www.comeet.com/jobs/etoro/41.009"
+  },
+  {
+   "name": "Kaltura",
+   "industry": "Digital Media",
+   "size": "l",
+   "cities": [
+    "בני ברק"
+   ],
+   "ats": "comeet",
+   "slug": "kaltura",
+   "uid": "E2.00D",
+   "careers_url": "https://www.comeet.com/jobs/kaltura/E2.00D"
+  },
+  {
+   "name": "Digital Turbine",
+   "industry": "AdTech",
+   "size": "xl",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "lever",
+   "slug": "digitalturbine"
+  },
+  {
+   "name": "Rise",
+   "industry": "Productivity",
+   "size": "m",
+   "cities": [
+    "רמת השרון"
+   ],
+   "ats": "comeet",
+   "slug": "risecodes",
+   "uid": "A9.000",
+   "careers_url": "https://www.comeet.com/jobs/risecodes/A9.000"
+  },
+  {
+   "name": "WSC Sports Technologies",
+   "industry": "Digital Media",
+   "size": "l",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "wsc-sports",
+   "uid": "93.007",
+   "careers_url": "https://www.comeet.com/jobs/wsc-sports/93.007"
+  },
+  {
+   "name": "JFrog",
+   "industry": "Cloud Computing",
+   "size": "l",
+   "cities": [
+    "נתניה"
+   ],
+   "ats": "greenhouse",
+   "slug": "jfrog"
+  },
+  {
+   "name": "Plus500",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "חיפה"
+   ],
+   "ats": "comeet",
+   "slug": "plus500",
+   "uid": "A1.00F",
+   "careers_url": "https://www.comeet.com/jobs/plus500/A1.00F"
+  },
+  {
+   "name": "Eitan Medical",
+   "industry": "Health",
+   "size": "l",
+   "cities": [
+    "נתניה"
+   ],
+   "ats": "comeet",
+   "slug": "eitanmedical",
+   "uid": "C6.00F",
+   "careers_url": "https://www.comeet.com/jobs/eitanmedical/C6.00F"
+  },
+  {
+   "name": "SimilarWeb",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "גבעתיים"
+   ],
+   "ats": "greenhouse",
+   "slug": "similarweb"
+  },
+  {
+   "name": "ZoomInfo",
+   "industry": "AI/ML",
+   "size": "xl",
+   "cities": [
+    "רעננה"
+   ],
+   "ats": "greenhouse",
+   "slug": "zoominfo"
+  },
+  {
+   "name": "Beamr",
+   "industry": "Cloud Computing",
+   "size": "s",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "beamr",
+   "uid": "A9.00B",
+   "careers_url": "https://www.comeet.com/jobs/beamr/A9.00B"
+  },
+  {
+   "name": "Gauzy",
+   "industry": "Sustainable Technology",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "gauzy",
+   "uid": "C5.003",
+   "careers_url": "https://www.comeet.com/jobs/gauzy/C5.003"
+  },
+  {
+   "name": "Windward",
+   "industry": "Automotive",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "windward",
+   "uid": "31.002",
+   "careers_url": "https://www.comeet.com/jobs/windward/31.002"
+  },
+  {
+   "name": "365Scores",
+   "industry": "Digital Media",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "365scores",
+   "uid": "B3.006",
+   "careers_url": "https://www.comeet.com/jobs/365scores/B3.006"
+  },
+  {
+   "name": "Duda",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "duda"
+  },
+  {
+   "name": "Tipalti",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "tipaltisolutions"
+  },
+  {
+   "name": "BioCatch",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "biocatch",
+   "uid": "03.00E",
+   "careers_url": "https://www.comeet.com/jobs/biocatch/03.00E"
+  },
+  {
+   "name": "Start.io",
+   "industry": "AdTech",
+   "size": "m",
+   "cities": [
+    "נתניה"
+   ],
+   "ats": "comeet",
+   "slug": "start.io",
+   "uid": "b2.004",
+   "careers_url": "https://www.comeet.com/jobs/start.io/b2.004"
+  },
+  {
+   "name": "REE Automotive",
+   "industry": "Automotive",
+   "size": "l",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "ree",
+   "uid": "D3.00B",
+   "careers_url": "https://www.comeet.com/jobs/ree/D3.00B"
+  },
+  {
+   "name": "Syqe Medical",
+   "industry": "Health",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "syqe",
+   "uid": "F1.00C",
+   "careers_url": "https://www.comeet.com/jobs/syqe/F1.00C"
+  },
+  {
+   "name": "Moon Active",
+   "industry": "Gaming",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "moonactive",
+   "uid": "A2.00C",
+   "careers_url": "https://www.comeet.com/jobs/moonactive/A2.00C"
+  },
+  {
+   "name": "Optibus",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "optibus",
+   "uid": "D1.00C",
+   "careers_url": "https://www.comeet.com/jobs/optibus/D1.00C"
+  },
+  {
+   "name": "Vectorious Medical Technologies",
+   "industry": "Health",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "vectoriousmedtech",
+   "uid": "68.003",
+   "careers_url": "https://www.comeet.com/jobs/vectoriousmedtech/68.003"
+  },
+  {
+   "name": "Jifiti",
+   "industry": "E-commerce & Retail",
+   "size": "m",
+   "cities": [
+    "לוד"
+   ],
+   "ats": "comeet",
+   "slug": "jifiti",
+   "uid": "47.005",
+   "careers_url": "https://www.comeet.com/jobs/jifiti/47.005"
+  },
+  {
+   "name": "FullPath",
+   "industry": "Automotive",
+   "size": "l",
+   "cities": [
+    "ירושלים",
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "fullpath",
+   "uid": "54.002",
+   "careers_url": "https://www.comeet.com/jobs/fullpath/54.002"
+  },
+  {
+   "name": "LSports",
+   "industry": "Digital Media",
+   "size": "m",
+   "cities": [
+    "אשקלון",
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "lsports",
+   "uid": "26.002",
+   "careers_url": "https://www.comeet.com/jobs/lsports/26.002"
+  },
+  {
+   "name": "Viber",
+   "industry": "Digital Media",
+   "size": "l",
+   "cities": [
+    "בני ברק"
+   ],
+   "ats": "comeet",
+   "slug": "viber",
+   "uid": "04.002",
+   "careers_url": "https://www.comeet.com/jobs/viber/04.002"
+  },
+  {
+   "name": "EX.CO",
+   "industry": "Productivity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "exco",
+   "uid": "F0.005",
+   "careers_url": "https://www.comeet.com/jobs/exco/F0.005"
+  },
+  {
+   "name": "Clinch",
+   "industry": "AdTech",
+   "size": "m",
+   "cities": [
+    "קיסריה"
+   ],
+   "ats": "comeet",
+   "slug": "clinch",
+   "uid": "42.007",
+   "careers_url": "https://www.comeet.com/jobs/clinch/42.007"
+  },
+  {
+   "name": "ThetaRay",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "הוד השרון"
+   ],
+   "ats": "comeet",
+   "slug": "thetaray",
+   "uid": "72.00F",
+   "careers_url": "https://www.comeet.com/jobs/thetaray/72.00F"
+  },
+  {
+   "name": "CYE",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "lever",
+   "slug": "CYE"
+  },
+  {
+   "name": "Cloudinary",
+   "industry": "Cloud Computing",
+   "size": "l",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "lever",
+   "slug": "cloudinary"
+  },
+  {
+   "name": "Matific",
+   "industry": "Gaming",
+   "size": "m",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "matific",
+   "uid": "62.000",
+   "careers_url": "https://www.comeet.com/jobs/matific/62.000"
+  },
+  {
+   "name": "mPrest",
+   "industry": "IoT",
+   "size": "m",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "mprest",
+   "uid": "38.005",
+   "careers_url": "https://www.comeet.com/jobs/mprest/38.005"
+  },
+  {
+   "name": "Konnecto",
+   "industry": "AdTech",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "konnecto",
+   "uid": "36.00C",
+   "careers_url": "https://www.comeet.com/jobs/konnecto/36.00C"
+  },
+  {
+   "name": "ScyllaDB",
+   "industry": "Cloud Computing",
+   "size": "l",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "scylladb",
+   "uid": "E4.006",
+   "careers_url": "https://www.comeet.com/jobs/scylladb/E4.006"
+  },
+  {
+   "name": "BrandShield",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "brandshield",
+   "uid": "13.002",
+   "careers_url": "https://www.comeet.com/jobs/brandshield/13.002"
+  },
+  {
+   "name": "Lightricks",
+   "industry": "Digital Media",
+   "size": "l",
+   "cities": [
+    "ירושלים"
+   ],
+   "ats": "greenhouse",
+   "slug": "lightricks"
+  },
+  {
+   "name": "Forter",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "forter"
+  },
+  {
+   "name": "Global-e",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "global-e",
+   "uid": "62.002",
+   "careers_url": "https://www.comeet.com/jobs/global-e/62.002"
+  },
+  {
+   "name": "Lusha",
+   "industry": "AdTech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "lusha",
+   "uid": "73.00B",
+   "careers_url": "https://www.comeet.com/jobs/lusha/73.00B"
+  },
+  {
+   "name": "Octopus Systems",
+   "industry": "Cybersecurity",
+   "size": "s",
+   "cities": [
+    "בני ברק"
+   ],
+   "ats": "lever",
+   "slug": "octopus"
+  },
+  {
+   "name": "MASSIVit 3D Printing Technologies",
+   "industry": "Productivity",
+   "size": "m",
+   "cities": [
+    "לוד"
+   ],
+   "ats": "comeet",
+   "slug": "massivit",
+   "uid": "39.007",
+   "careers_url": "https://www.comeet.com/jobs/massivit/39.007"
+  },
+  {
+   "name": "Coinbase Israel",
+   "industry": "Fintech",
+   "size": "s",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "greenhouse",
+   "slug": "Coinbase"
+  },
+  {
+   "name": "Transmit Security",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "transmitsecurity"
+  },
+  {
+   "name": "Altair",
+   "industry": "AI/ML",
+   "size": "xs",
+   "cities": [
+    "יקנעם עילית"
+   ],
+   "ats": "comeet",
+   "slug": "altair-semi",
+   "uid": "88.003",
+   "careers_url": "https://www.comeet.com/jobs/altair-semi/88.003"
+  },
+  {
+   "name": "DealHub",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "חולון"
+   ],
+   "ats": "comeet",
+   "slug": "dealhub",
+   "uid": "86.005",
+   "careers_url": "https://www.comeet.com/jobs/dealhub/86.005"
+  },
+  {
+   "name": "Gloat",
+   "industry": "Productivity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "gloat",
+   "uid": "E5.000",
+   "careers_url": "https://www.comeet.com/jobs/gloat/E5.000"
+  },
+  {
+   "name": "Coralogix",
+   "industry": "Cloud Computing",
+   "size": "l",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "coralogix",
+   "uid": "06.004",
+   "careers_url": "https://www.comeet.com/jobs/coralogix/06.004"
+  },
+  {
+   "name": "Guesty",
+   "industry": "E-commerce & Retail",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "guesty",
+   "uid": "10.000",
+   "careers_url": "https://www.comeet.com/jobs/guesty/10.000"
+  },
+  {
+   "name": "NeoGames",
+   "industry": "Gaming",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "neogames",
+   "uid": "16.00C",
+   "careers_url": "https://www.comeet.com/jobs/neogames/16.00C"
+  },
+  {
+   "name": "PlainID",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "plainid",
+   "uid": "C4.00C",
+   "careers_url": "https://www.comeet.com/jobs/plainid/C4.00C"
+  },
+  {
+   "name": "AugMedics",
+   "industry": "AR/VR",
+   "size": "m",
+   "cities": [
+    "יקנעם עילית"
+   ],
+   "ats": "comeet",
+   "slug": "augmedics",
+   "uid": "26.00C",
+   "careers_url": "https://www.comeet.com/jobs/augmedics/26.00C"
+  },
+  {
+   "name": "Percepto",
+   "industry": "Robotics & Automation",
+   "size": "m",
+   "cities": [
+    "מודיעין מכבים רעות"
+   ],
+   "ats": "comeet",
+   "slug": "percepto",
+   "uid": "44.000",
+   "careers_url": "https://www.comeet.com/jobs/percepto/44.000"
+  },
+  {
+   "name": "Coro",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב"
+   ],
+   "ats": "comeet",
+   "slug": "coro",
+   "uid": "08.00A",
+   "careers_url": "https://www.comeet.com/jobs/coro/08.00A"
+  },
+  {
+   "name": "Enercon",
+   "industry": "Aerospace",
+   "size": "m",
+   "cities": [
+    "נתניה"
+   ],
+   "ats": "comeet",
+   "slug": "enercon",
+   "uid": "A4.00D",
+   "careers_url": "https://www.comeet.com/jobs/enercon/A4.00D"
+  },
+  {
+   "name": "Locusview",
+   "industry": "IoT",
+   "size": "m",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "locusview",
+   "uid": "25.002",
+   "careers_url": "https://www.comeet.com/jobs/locusview/25.002"
+  },
+  {
+   "name": "Cynet",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "cynet",
+   "uid": "33.00D",
+   "careers_url": "https://www.comeet.com/jobs/cynet/33.00D"
+  },
+  {
+   "name": "Shopic",
+   "industry": "E-commerce & Retail",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "shopic",
+   "uid": "E6.002",
+   "careers_url": "https://www.comeet.com/jobs/shopic/E6.002"
+  },
+  {
+   "name": "Deep Instinct",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "deepinstinct",
+   "uid": "72.00A",
+   "careers_url": "https://www.comeet.com/jobs/deepinstinct/72.00A"
+  },
+  {
+   "name": "Storemaven",
+   "industry": "AdTech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "storemaven",
+   "uid": "45.00F",
+   "careers_url": "https://www.comeet.com/jobs/storemaven/45.00F"
+  },
+  {
+   "name": "Placer.ai",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "greenhouse",
+   "slug": "placerlabs"
+  },
+  {
+   "name": "Claroty",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "Claroty",
+   "uid": "F2.004",
+   "careers_url": "https://www.comeet.com/jobs/Claroty/F2.004"
+  },
+  {
+   "name": "MDClone",
+   "industry": "Health",
+   "size": "m",
+   "cities": [
+    "באר שבע"
+   ],
+   "ats": "comeet",
+   "slug": "mdclone",
+   "uid": "66.004",
+   "careers_url": "https://www.comeet.com/jobs/mdclone/66.004"
+  },
+  {
+   "name": "Cyberbit",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "רעננה"
+   ],
+   "ats": "comeet",
+   "slug": "Cyberbit",
+   "uid": "C3.00E",
+   "careers_url": "https://www.comeet.com/jobs/Cyberbit/C3.00E"
+  },
+  {
+   "name": "Sealights Technologies",
+   "industry": "Productivity",
+   "size": "m",
+   "cities": [
+    "כפר סבא"
+   ],
+   "ats": "comeet",
+   "slug": "sealights",
+   "uid": "C5.008",
+   "careers_url": "https://www.comeet.com/jobs/sealights/C5.008"
+  },
+  {
+   "name": "HiBob",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "hibob",
+   "uid": "12.00A",
+   "careers_url": "https://www.comeet.com/jobs/hibob/12.00A"
+  },
+  {
+   "name": "Cross River Technologies",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "crossriver",
+   "uid": "C7.00F",
+   "careers_url": "https://www.comeet.com/jobs/crossriver/C7.00F"
+  },
+  {
+   "name": "Aqua Security",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "aquasec",
+   "uid": "91.001",
+   "careers_url": "https://www.comeet.com/jobs/aquasec/91.001"
+  },
+  {
+   "name": "DriveNets",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "רעננה"
+   ],
+   "ats": "comeet",
+   "slug": "drivenets",
+   "uid": "72.006",
+   "careers_url": "https://www.comeet.com/jobs/drivenets/72.006"
+  },
+  {
+   "name": "Holisto",
+   "industry": "E-commerce & Retail",
+   "size": "m",
+   "cities": [
+    "ראשון לציון"
+   ],
+   "ats": "comeet",
+   "slug": "holisto",
+   "uid": "76.001",
+   "careers_url": "https://www.comeet.com/jobs/holisto/76.001"
+  },
+  {
+   "name": "Pentera",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "pentera",
+   "uid": "C5.00D",
+   "careers_url": "https://www.comeet.com/jobs/pentera/C5.00D"
+  },
+  {
+   "name": "CyberProof",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "cyberproof",
+   "uid": "75.00F",
+   "careers_url": "https://www.comeet.com/jobs/cyberproof/75.00F"
+  },
+  {
+   "name": "VAST Data",
+   "industry": "Cloud Computing",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "vastdata",
+   "uid": "43.001",
+   "careers_url": "https://www.comeet.com/jobs/vastdata/43.001"
+  },
+  {
+   "name": "Mixtiles",
+   "industry": "E-commerce & Retail",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "mixtiles"
+  },
+  {
+   "name": "WeTrip",
+   "industry": "E-commerce & Retail",
+   "size": "s",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "weski",
+   "uid": "F8.00C",
+   "careers_url": "https://www.comeet.com/jobs/weski/F8.00C"
+  },
+  {
+   "name": "Innoviz Technologies",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "Rosh Haayin"
+   ],
+   "ats": "comeet",
+   "slug": "innoviz",
+   "uid": "52.004",
+   "careers_url": "https://www.comeet.com/jobs/innoviz/52.004"
+  },
+  {
+   "name": "Aidoc",
+   "industry": "Health",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "Aidoc",
+   "uid": "B4.007",
+   "careers_url": "https://www.comeet.com/jobs/Aidoc/B4.007"
+  },
+  {
+   "name": "IONIX",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "ionix",
+   "uid": "08.003",
+   "careers_url": "https://www.comeet.com/jobs/ionix/08.003"
+  },
+  {
+   "name": "Imubit",
+   "industry": "AI/ML",
+   "size": "m",
+   "cities": [
+    "מודיעין-מכבים-רעות"
+   ],
+   "ats": "greenhouse",
+   "slug": "imubit"
+  },
+  {
+   "name": "Silverfort",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "silverfort",
+   "uid": "54.007",
+   "careers_url": "https://www.comeet.com/jobs/silverfort/54.007"
+  },
+  {
+   "name": "Playstudios",
+   "industry": "Gaming",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "playstudios",
+   "uid": "E2.00B",
+   "careers_url": "https://www.comeet.com/jobs/playstudios/E2.00B"
+  },
+  {
+   "name": "TicTuk",
+   "industry": "E-commerce & Retail",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "tictuk",
+   "uid": "78.002",
+   "careers_url": "https://www.comeet.com/jobs/tictuk/78.002"
+  },
+  {
+   "name": "CYMOTIVE Technologies",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "cymotive",
+   "uid": "F1.008",
+   "careers_url": "https://www.comeet.com/jobs/cymotive/F1.008"
+  },
+  {
+   "name": "Arpeely",
+   "industry": "AdTech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "arpeely",
+   "uid": "57.001",
+   "careers_url": "https://www.comeet.com/jobs/arpeely/57.001"
+  },
+  {
+   "name": "Viz.ai",
+   "industry": "Health",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "vizai"
+  },
+  {
+   "name": "Wiliot",
+   "industry": "IoT",
+   "size": "l",
+   "cities": [
+    "קיסריה"
+   ],
+   "ats": "comeet",
+   "slug": "wiliot",
+   "uid": "F6.003",
+   "careers_url": "https://www.comeet.com/jobs/wiliot/F6.003"
+  },
+  {
+   "name": "Capitolis",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "capitolis"
+  },
+  {
+   "name": "D-Fend Solutions",
+   "industry": "Aerospace",
+   "size": "m",
+   "cities": [
+    "רעננה"
+   ],
+   "ats": "lever",
+   "slug": "d-fendsolutions"
+  },
+  {
+   "name": "Upstream Security",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "upstream",
+   "uid": "E4.003",
+   "careers_url": "https://www.comeet.com/jobs/upstream/E4.003"
+  },
+  {
+   "name": "Pliops",
+   "industry": "Semiconductors",
+   "size": "m",
+   "cities": [
+    "Ramat Gan"
+   ],
+   "ats": "comeet",
+   "slug": "pliops",
+   "uid": "05.004",
+   "careers_url": "https://www.comeet.com/jobs/pliops/05.004"
+  },
+  {
+   "name": "Prisma Photonics",
+   "industry": "IoT",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "prismaphotonics",
+   "uid": "18.00C",
+   "careers_url": "https://www.comeet.com/jobs/prismaphotonics/18.00C"
+  },
+  {
+   "name": "Axonius",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "axonius"
+  },
+  {
+   "name": "Lili",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "ראשון לציון"
+   ],
+   "ats": "comeet",
+   "slug": "lili",
+   "uid": "A6.009",
+   "careers_url": "https://www.comeet.com/jobs/lili/A6.009"
+  },
+  {
+   "name": "NextSilicon",
+   "industry": "Semiconductors",
+   "size": "l",
+   "cities": [
+    "גבעתיים",
+    "חיפה"
+   ],
+   "ats": "comeet",
+   "slug": "nextsilicon",
+   "uid": "18.007",
+   "careers_url": "https://www.comeet.com/jobs/nextsilicon/18.007"
+  },
+  {
+   "name": "Bookaway",
+   "industry": "Productivity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "Bookaway",
+   "uid": "64.006",
+   "careers_url": "https://www.comeet.com/jobs/Bookaway/64.006"
+  },
+  {
+   "name": "BeeHero",
+   "industry": "Sustainable Technology",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "beehero",
+   "uid": "78.00E",
+   "careers_url": "https://www.comeet.com/jobs/beehero/78.00E"
+  },
+  {
+   "name": "AI21 Labs",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "ai21",
+   "uid": "E6.001",
+   "careers_url": "https://www.comeet.com/jobs/ai21/E6.001"
+  },
+  {
+   "name": "Comunix",
+   "industry": "Gaming",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "comunix",
+   "uid": "86.006",
+   "careers_url": "https://www.comeet.com/jobs/comunix/86.006"
+  },
+  {
+   "name": "Trigo",
+   "industry": "Robotics & Automation",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "trigo",
+   "uid": "A6.005",
+   "careers_url": "https://www.comeet.com/jobs/trigo/A6.005"
+  },
+  {
+   "name": "Island",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "island",
+   "uid": "09.00A",
+   "careers_url": "https://www.comeet.com/jobs/island/09.00A"
+  },
+  {
+   "name": "H2Pro",
+   "industry": "Sustainable Technology",
+   "size": "m",
+   "cities": [
+    "קיסריה"
+   ],
+   "ats": "comeet",
+   "slug": "h2pro",
+   "uid": "A7.001",
+   "careers_url": "https://www.comeet.com/jobs/h2pro/A7.001"
+  },
+  {
+   "name": "Parallel Wireless",
+   "industry": "Telecommunications",
+   "size": "l",
+   "cities": [
+    "צור יגאל"
+   ],
+   "ats": "lever",
+   "slug": "parallelwireless"
+  },
+  {
+   "name": "Daisy",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "daisy",
+   "uid": "67.002",
+   "careers_url": "https://www.comeet.com/jobs/daisy/67.002"
+  },
+  {
+   "name": "Tastewise",
+   "industry": "AI/ML",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "tastewise",
+   "uid": "F8.000",
+   "careers_url": "https://www.comeet.com/jobs/tastewise/F8.000"
+  },
+  {
+   "name": "ActiveFence",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "בנימינה גבעת עדה"
+   ],
+   "ats": "comeet",
+   "slug": "activefence",
+   "uid": "D5.005",
+   "careers_url": "https://www.comeet.com/jobs/activefence/D5.005"
+  },
+  {
+   "name": "Agora",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "agora",
+   "uid": "08.007",
+   "careers_url": "https://www.comeet.com/jobs/agora/08.007"
+  },
+  {
+   "name": "Fireblocks",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "fireblocks"
+  },
+  {
+   "name": "Fabric",
+   "industry": "E-commerce & Retail",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "fabric",
+   "uid": "52.009",
+   "careers_url": "https://www.comeet.com/jobs/fabric/52.009"
+  },
+  {
+   "name": "GK8",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "comeet",
+   "slug": "gk8",
+   "uid": "E8.000",
+   "careers_url": "https://www.comeet.com/jobs/gk8/E8.000"
+  },
+  {
+   "name": "Guardio",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "guardio",
+   "uid": "57.000",
+   "careers_url": "https://www.comeet.com/jobs/guardio/57.000"
+  },
+  {
+   "name": "SuperPlay",
+   "industry": "Gaming",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "superplay",
+   "uid": "28.003",
+   "careers_url": "https://www.comeet.com/jobs/superplay/28.003"
+  },
+  {
+   "name": "Orca Security",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "orcasecurity"
+  },
+  {
+   "name": "XTEND",
+   "industry": "Aerospace",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "xtend",
+   "uid": "85.00A",
+   "careers_url": "https://www.comeet.com/jobs/xtend/85.00A"
+  },
+  {
+   "name": "ONE ZERO Digital Bank",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "onezerobank",
+   "uid": "36.00A",
+   "careers_url": "https://www.comeet.com/jobs/onezerobank/36.00A"
+  },
+  {
+   "name": "Rapyd Financial Network",
+   "industry": "Fintech",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "rapyd",
+   "uid": "73.00E",
+   "careers_url": "https://www.comeet.com/jobs/rapyd/73.00E"
+  },
+  {
+   "name": "Fetcherr",
+   "industry": "AI/ML",
+   "size": "m",
+   "cities": [
+    "נתניה"
+   ],
+   "ats": "comeet",
+   "slug": "fetcherr",
+   "uid": "68.006",
+   "careers_url": "https://www.comeet.com/jobs/fetcherr/68.006"
+  },
+  {
+   "name": "Airwayz Drones",
+   "industry": "Robotics & Automation",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "airwayz",
+   "uid": "79.009",
+   "careers_url": "https://www.comeet.com/jobs/airwayz/79.009"
+  },
+  {
+   "name": "Zero Networks",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "zeronetworks",
+   "uid": "39.00F",
+   "careers_url": "https://www.comeet.com/jobs/zeronetworks/39.00F"
+  },
+  {
+   "name": "Cycode",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "cycode",
+   "uid": "A8.00D",
+   "careers_url": "https://www.comeet.com/jobs/cycode/A8.00D"
+  },
+  {
+   "name": "Justt",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "justt",
+   "uid": "36.001",
+   "careers_url": "https://www.comeet.com/jobs/justt/36.001"
+  },
+  {
+   "name": "Navan",
+   "industry": "E-commerce & Retail",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "TripActions"
+  },
+  {
+   "name": "Hexagon",
+   "industry": "Robotics & Automation",
+   "size": "m",
+   "cities": [
+    "רעננה"
+   ],
+   "ats": "comeet",
+   "slug": "hexagon",
+   "uid": "62.00E",
+   "careers_url": "https://www.comeet.com/jobs/hexagon/62.00E"
+  },
+  {
+   "name": "CardinalOps",
+   "industry": "Cybersecurity",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "cardinalops",
+   "uid": "66.005",
+   "careers_url": "https://www.comeet.com/jobs/cardinalops/66.005"
+  },
+  {
+   "name": "Elastic Technologies Israel",
+   "industry": "AI/ML",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "elastic"
+  },
+  {
+   "name": "Imagen",
+   "industry": "Digital Media",
+   "size": "m",
+   "cities": [
+    "גבעתיים"
+   ],
+   "ats": "comeet",
+   "slug": "imagen-ai",
+   "uid": "78.00F",
+   "careers_url": "https://www.comeet.com/jobs/imagen-ai/78.00F"
+  },
+  {
+   "name": "Landa Digital Printing",
+   "industry": "Digital Media",
+   "size": "l",
+   "cities": [
+    "גבעת ברנר"
+   ],
+   "ats": "comeet",
+   "slug": "landacorp",
+   "uid": "A4.000",
+   "careers_url": "https://www.comeet.com/jobs/landacorp/A4.000"
+  },
+  {
+   "name": "Cognyte",
+   "industry": "Cybersecurity",
+   "size": "l",
+   "cities": [
+    "הרצליה"
+   ],
+   "ats": "comeet",
+   "slug": "cognyte",
+   "uid": "F2.009",
+   "careers_url": "https://www.comeet.com/jobs/cognyte/F2.009"
+  },
+  {
+   "name": "DoControl",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "קריית אונו"
+   ],
+   "ats": "comeet",
+   "slug": "docontrol",
+   "uid": "07.003",
+   "careers_url": "https://www.comeet.com/jobs/docontrol/07.003"
+  },
+  {
+   "name": "Aiven",
+   "industry": "Cloud Computing",
+   "size": "l",
+   "cities": [
+    "הוד השרון"
+   ],
+   "ats": "greenhouse",
+   "slug": "aiven36"
+  },
+  {
+   "name": "Legit Security",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "legitsecurity.com",
+   "uid": "37.004",
+   "careers_url": "https://www.comeet.com/jobs/legitsecurity.com/37.004"
+  },
+  {
+   "name": "Riverside.fm",
+   "industry": "AI/ML",
+   "size": "l",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "riverside-fm",
+   "uid": "66.009",
+   "careers_url": "https://www.comeet.com/jobs/riverside-fm/66.009"
+  },
+  {
+   "name": "Dazz",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "dazzinc"
+  },
+  {
+   "name": "Contrast Security Israel",
+   "industry": "Cybersecurity",
+   "size": "s",
+   "cities": [
+    "רמת גן"
+   ],
+   "ats": "lever",
+   "slug": "contrastsecurity"
+  },
+  {
+   "name": "8fig",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "8fig",
+   "uid": "08.004",
+   "careers_url": "https://www.comeet.com/jobs/8fig/08.004"
+  },
+  {
+   "name": "Anchor",
+   "industry": "Fintech",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "anchorfintech",
+   "uid": "87.00D",
+   "careers_url": "https://www.comeet.com/jobs/anchorfintech/87.00D"
+  },
+  {
+   "name": "Toka",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "toka",
+   "uid": "46.00D",
+   "careers_url": "https://www.comeet.com/jobs/toka/46.00D"
+  },
+  {
+   "name": "Retym",
+   "industry": "Productivity",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "retym",
+   "uid": "C6.003",
+   "careers_url": "https://www.comeet.com/jobs/retym/C6.003"
+  },
+  {
+   "name": "Exodigo",
+   "industry": "Robotics & Automation",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "exodigo",
+   "uid": "89.005",
+   "careers_url": "https://www.comeet.com/jobs/exodigo/89.005"
+  },
+  {
+   "name": "Chargeflow",
+   "industry": "Fintech",
+   "size": "m",
+   "cities": [
+    "מודיעין מכבים רעות"
+   ],
+   "ats": "comeet",
+   "slug": "chargeflow",
+   "uid": "29.001",
+   "careers_url": "https://www.comeet.com/jobs/chargeflow/29.001"
+  },
+  {
+   "name": "AKA FOODS",
+   "industry": "AI/ML",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "aka_food",
+   "uid": "79.00D",
+   "careers_url": "https://www.comeet.com/jobs/aka_food/79.00D"
+  },
+  {
+   "name": "Okoora",
+   "industry": "Fintech",
+   "size": "s",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "okoora",
+   "uid": "85.00C",
+   "careers_url": "https://www.comeet.com/jobs/okoora/85.00C"
+  },
+  {
+   "name": "Dig Security",
+   "industry": "Cybersecurity",
+   "size": "m",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "comeet",
+   "slug": "dig",
+   "uid": "E7.00B",
+   "careers_url": "https://www.comeet.com/jobs/dig/E7.00B"
+  },
+  {
+   "name": "Datadog",
+   "industry": "Cloud Computing",
+   "size": "xl",
+   "cities": [
+    "תל אביב-יפו"
+   ],
+   "ats": "greenhouse",
+   "slug": "datadog"
+  },
+  {
+   "name": "Nominal",
+   "industry": "Productivity",
+   "size": "s",
+   "cities": [
+    "ראשון לציון"
+   ],
+   "ats": "comeet",
+   "slug": "nominal",
+   "uid": "E8.003",
+   "careers_url": "https://www.comeet.com/jobs/nominal/E8.003"
+  },
+  {
+   "name": "Gilat Satellite Networks",
+   "industry": "Telecommunications",
+   "size": "l",
+   "cities": [
+    "פתח תקווה"
+   ],
+   "ats": "comeet",
+   "slug": "gilat",
+   "uid": "39.005",
+   "careers_url": "https://www.comeet.com/jobs/gilat/39.005"
+  },
+  {
+   "name": "Verifone",
+   "industry": "Telecommunications",
+   "size": "l",
+   "cities": [
+    "ראש העין"
+   ],
+   "ats": "greenhouse",
+   "slug": "verifone"
+  },
+  {
+   "name": "Lumenis",
+   "industry": "Health",
+   "size": "l",
+   "cities": [
+    "יוקנעם עילית"
+   ],
+   "ats": "comeet",
+   "slug": "lumenis",
+   "uid": "A1.00C",
+   "careers_url": "https://www.comeet.com/jobs/lumenis/A1.00C"
+  },
+  {
+   "name": "ACS Motion Control",
+   "industry": "Robotics & Automation",
+   "size": "m",
+   "cities": [
+    "יקנעם עילית"
+   ],
+   "ats": "comeet",
+   "slug": "ACS",
+   "uid": "14.000",
+   "careers_url": "https://www.comeet.com/jobs/ACS/14.000"
+  }
+ ]
+}

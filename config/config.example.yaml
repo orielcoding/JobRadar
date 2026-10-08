@@ -1,0 +1,81 @@
+# ===================================================================
+# JobRadar – הגדרות מערכת. כל מפתח שלא מופיע כאן מקבל ברירת מחדל
+# (ראה src/jobradar/config.py → DEFAULTS). שנה רק מה שצריך.
+# ===================================================================
+
+# שפת ההסברים בהערכות ובהתראות
+output_language: Hebrew
+
+llm:
+  backend: claude_cli          # claude_cli = Claude Code המקומי שלך על מנוי הפרו | fake = בדיקות בלי מודל
+  claude_bin: claude           # אם doctor לא מוצא את Claude Code – שים כאן נתיב מלא
+  triage_model: haiku          # שלב 2: מודל זול, משרות רבות בכל קריאה
+  deep_model: sonnet           # שלב 3: מודל חזק, משרה אחת בכל קריאה (אפשר opus אם המכסה מאפשרת)
+  timeout_sec: 300
+  # אם doctor נכשל על אחד הדגלים – ראה docs/SETUP.md › "פתרון תקלות"
+  setting_sources: ""          # בידוד: ההערכות לא רואות את CLAUDE.md ואת ההגדרות האישיות שלך
+  extra_args: []
+
+triage:
+  enabled: true                # false = לדלג על שלב 2 ולשלוח הכל להערכה מעמיקה (רק בנפח קטן)
+  batch_size: 25               # משרות בכל קריאה
+  max_calls_per_run: 8         # תקרה לחיסכון במכסה. מה שלא נכנס – ממתין להרצה הבאה
+
+deep:
+  max_per_run: 12              # הערכות מעמיקות בכל הרצה
+
+thresholds:                    # מתי לשלוח פינג (ההחלטה בקוד, לא במודל)
+  min_capability: 7
+  min_desire: 6
+  notify_verdicts: [strong, good]
+  cv_gap_flag: 3               # יכולת פחות מעבר־סינון ≥ 3 → סימון "כדאי להתאים קו״ח"
+
+notify:
+  channels: [ntfy]             # ntfy | telegram | email | console (אפשר כמה)
+  max_pings_per_run: 8
+  light_matches_digest: true   # פינג מרוכז אחד על משרות בלי תיאור (לינקדין / techmap)
+  light_digest_verdicts: ["yes"] # אילו תשובות של הסינון המהיר נכנסות לפינג המרוכז (מועדפות תמיד נכנסות)
+  max_age_hours: null          # למשל 48: בלי פינג למשרות ישנות מזה ברגע השליחה
+
+favorites:                     # חברות שסימנת favorite: true ב-companies.yaml
+  skip_triage: true            # מדלגות על הסינון המהיר וישר להערכה מעמיקה
+  min_capability: 6            # רף פינג נמוך יותר מהרגיל
+  min_desire: 5
+  notify_verdicts: [strong, good, stretch]
+
+# חלון המעקב (jobradar inbox): מקומי בלבד, http://127.0.0.1:<port>. ראה docs/TRACKER.md
+tracker:
+  port: 8765
+  idle_minutes: 5              # השרת המקומי נסגר כמה דקות אחרי שסוגרים את החלון
+
+# קו״ח מותאמים (כפתור "צור קו״ח" בחלון המעקב, או jobradar cv <id>). כל קו״ח = קריאה אחת למודל מהמכסה,
+# ועוד קריאת חיפוש אחת כשאין תיאור משרה. PDF ב-profile/tailored/, קבצי עבודה ב-profile/tailored/work/
+cv:
+  model: sonnet                # אפשר opus אם המכסה מאפשרת
+  search_posting: true         # אין תיאור → חיפוש המשרה באתר החברה (אף פעם לא בלינקדין)
+  contact_line: ""             # "עיר · מייל · טלפון · linkedin.com/in/... · github.com/..." – נכנס ל-PDF מקומית, לא נשלח למודל
+
+# כיסוי רחב לפי תפקיד: ~4,000 משרות הייטק בישראל, מתעדכן כל יום
+# (Israeli Tech Map, github.com/mluggy/techmap, רישיון ODbL). בלי תיאורי משרה,
+# אז מה שלא נמצא גם באתר קריירה במעקב מגיע כ"התאמה קלה".
+techmap:
+  enabled: false
+  categories: []               # מתוך: software, data-science, devops, qa, frontend, product, security,
+                               # design, project-management, support, business, marketing, sales, finance, hr, legal, admin
+
+gmail:                         # רק אם רוצים התראות לינקדין / AllJobs דרך המייל
+  enabled: false
+  user: you@gmail.com
+  label: jobradar              # התווית שהפילטר בג׳ימייל שם על מיילי ההתראות
+  lookback_days: 3
+
+# איך לפענח כל סוג מייל התראה. linkedin = מפענח ייעודי.
+# links = כללי: כל קישור שתואם ל-link_pattern הופך למשרה (הקבוצה הראשונה = מזהה).
+email_sources:
+  - name: linkedin_email
+    from_contains: linkedin.com
+    parser: linkedin
+  # - name: alljobs_email
+  #   from_contains: alljobs.co.il
+  #   parser: links
+  #   link_pattern: "alljobs\\.co\\.il/.*?JobID=(\\d+)"

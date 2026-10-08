@@ -1,0 +1,33 @@
+[
+ {
+  "uid": "87.405",
+  "name": "Data Platform Engineer",
+  "department": "R&D",
+  "email": "jobs@acme.com",
+  "location": {
+   "name": "Tel Aviv",
+   "country": "IL",
+   "city": "Tel Aviv",
+   "is_remote": false
+  },
+  "employment_type": "Full-time",
+  "experience_level": "Senior",
+  "workplace_type": "Hybrid",
+  "url_comeet_hosted_page": "https://www.comeet.com/jobs/acme/30.005/data-platform-engineer/87.405",
+  "url_active_page": "https://acme.com/careers/87.405",
+  "time_updated": "2026-09-26T12:00:00Z",
+  "company_name": "Acme",
+  "details": [
+   {
+    "name": "Description",
+    "value": "<p>Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. Own the data platform end to end. </p>",
+    "order": 1
+   },
+   {
+    "name": "Requirements",
+    "value": "<ul><li>Kafka</li><li>Python</li></ul>",
+    "order": 2
+   }
+  ]
+ }
+]

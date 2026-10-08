@@ -1,0 +1,37 @@
+# ===================================================================
+# חברות למעקב. הדרך הקלה להוסיף:
+#   jobradar detect https://careers.somecompany.com --add
+# הפקודה מזהה את מערכת הגיוס (Greenhouse / Lever / Ashby / Workable / Comeet)
+# ומוסיפה את הרשומה לכאן. אפשר גם לכתוב ידנית לפי הדוגמאות.
+# enabled: false = השבתה זמנית בלי למחוק.
+# ===================================================================
+
+# ⭐ favorite: true = חברה שמעניינת אותך במיוחד. היא לא מגבילה את החיפוש,
+# רק מקבלת עדיפות (ראה favorites ב-config.yaml). אפשר גם רשומה עם שם בלבד,
+# לחברה שאין לה אתר קריירה נתמך ומשרותיה מגיעות מלינקדין או מ-techmap.
+#
+# לכיסוי רחב: jobradar import-techmap --sizes m,l,xl   (כ-180 חברות ישראליות)
+
+companies:
+  # - name: Wix
+  #   favorite: true
+  # דוגמאות אמיתיות שנבדקו (אפשר למחוק):
+  - name: Riskified
+    ats: greenhouse
+    slug: riskified            # boards.greenhouse.io/riskified
+  - name: Lemonade
+    ats: ashby
+    slug: lemonade             # jobs.ashbyhq.com/lemonade
+
+  # תבניות לפורמטים האחרים:
+  # - name: SomeCo
+  #   ats: lever
+  #   slug: someco             # jobs.lever.co/someco   (region: eu עבור jobs.eu.lever.co)
+  # - name: SomeCo
+  #   ats: workable
+  #   slug: someco             # apply.workable.com/someco
+  # - name: SomeCo
+  #   ats: comeet
+  #   careers_url: https://www.comeet.com/jobs/someco/A1.234
+  # - name: SomeCo             # עדיין לא זוהה – detect ימלא
+  #   careers_url: https://someco.com/careers

@@ -1,0 +1,34 @@
+{
+ "apiVersion": "1",
+ "jobs": [
+  {
+   "id": "ash-1",
+   "title": "Senior Backend Engineer",
+   "department": "Engineering",
+   "team": "Platform",
+   "employmentType": "FullTime",
+   "location": "Tel Aviv, Israel",
+   "secondaryLocations": [
+    {
+     "location": "Remote, Israel"
+    }
+   ],
+   "publishedAt": "2026-09-25T08:00:00.000+00:00",
+   "isListed": true,
+   "isRemote": false,
+   "workplaceType": "Hybrid",
+   "descriptionHtml": "<p>Python services</p>",
+   "descriptionPlain": "Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. Build Python services at scale. ",
+   "jobUrl": "https://jobs.ashbyhq.com/acme/ash-1",
+   "applyUrl": "https://jobs.ashbyhq.com/acme/ash-1/application"
+  },
+  {
+   "id": "ash-2",
+   "title": "Hidden role",
+   "isListed": false,
+   "location": "TLV",
+   "jobUrl": "x",
+   "descriptionPlain": "x"
+  }
+ ]
+}

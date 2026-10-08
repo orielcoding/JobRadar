@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jobradar"
+version = "0.1.0"
+description = "Personal job radar: fetch openings, filter, evaluate fit with local Claude Code, ping your phone."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0", "certifi"]
+
+[project.scripts]
+jobradar = "jobradar.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+jobradar = ["inbox.html"]

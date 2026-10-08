@@ -1,0 +1,8 @@
+{"uid": "87.406", "name": "Data Analyst", "department": "Analytics",
+ "location": {"name": "Tel Aviv", "country": "IL", "city": "Tel Aviv", "is_remote": false},
+ "workplace_type": "Hybrid", "time_updated": "2026-09-30T08:00:00Z", "company_name": "Acme",
+ "url_comeet_hosted_page": "https://www.comeet.com/jobs/acme/30.005/data-analyst/87.406",
+ "details": [
+  {"name": "Description", "order": 1, "value": "<p>Own product analytics for our checkout funnel: define KPIs, build dashboards and run experiments with product managers.</p>"},
+  {"name": "Requirements", "order": 2, "value": "<ul><li>B.Sc. in a quantitative field</li><li>Strong SQL and Python</li><li>Experience with A/B testing</li></ul>"}
+ ]}

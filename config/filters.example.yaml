@@ -1,0 +1,67 @@
+# ===================================================================
+# מסננים קשיחים. רצים בקוד לפני כל מודל, חינם ומיידי.
+# כלל אצבע: כאן רק מה שאפשר לנסח בוודאות (מיקום, מילים בכותרת, שנות ניסיון).
+# כל מה שדורש שיקול דעת נשאר למודל, שמחליט לפי הפרופיל שלך.
+# התבניות הן regex ולא תלויות באותיות גדולות/קטנות. \b = גבול מילה.
+# לפני ששומרים שינוי:  jobradar filter-test  (מראה מה ייפסל, בלי לשנות כלום)
+# ===================================================================
+
+locations:
+  # משרה עוברת אם המיקום מכיל אחת מהמחרוזות. רשימה ריקה = בלי סינון מיקום.
+  allow_any_of: [israel, "tel aviv", "tel-aviv", herzliya, "ramat gan", "petah tikva", "petach tikva",
+                 "givatayim", "bnei brak", "raanana", "ra'anana", "hod hasharon", "kfar saba", "rehovot",
+                 jerusalem, haifa, yokneam, netanya, "or yehuda", remote, "תל אביב", "ישראל", "הרצליה"]
+  allow_unknown: true          # משרות בלי מיקום (נפוץ במייל) עוברות הלאה
+  deny_any_of: []              # משרה נפסלת אם המיקום מכיל אחת מהמחרוזות (גובר על allow), למשל [jerusalem, "ירושלים"]
+  # שים לב: "remote" מעביר גם "Remote, US". זה מכוון, המודל מסנן לפי הפרופיל שלך.
+
+workplace:
+  allow: []                    # למשל [remote, hybrid]. ריק = הכל
+
+title:
+  include_any: []              # אם לא ריק, רק כותרות שמתאימות לאחת. בדרך כלל עדיף להשאיר ריק ולתת לפרופיל להחליט.
+  exclude_any:
+    # --- בכירות: לא Senior / Principal / Staff / Lead / Architect ---
+    - "\\b(senior|sr|snr)\\b"
+    - "\\bprincipal\\b"
+    - "\\bstaff\\b"
+    - "\\blead\\b"                       # כולל Team Lead, Tech Lead (חריג ל-Lead Generation למטה)
+    - "\\barchitect\\b"
+    - "\\b(director|head of|vp|vice president|chief)\\b"
+    - "בכיר|בכירה|ראש צוות|ראש תחום|ארכיטקט"
+    # --- חומרה, שבבים ואלקטרוניקה ---
+    - "\\b(chip|asic|fpga|vlsi|rtl|pcb|silicon|post[- ]silicon|analog|mixed[- ]signal)\\b"
+    - "\\b(soc|ip) (design|verification|integration)\\b"
+    - "\\b(physical design|design verification|dft|layout engineer|verification engineer)\\b"
+    - "\\b(hardware|hw|electrical|electronics?|board)\\b"
+    - "\\b(embedded|firmware|bsp)\\b"
+    - "\\b(validation engineer|system validation)\\b"
+    - "חומרה|שבבים|אלקטרוניקה|משובצ"
+    # --- כללי ---
+    - "\\bintern(ship)?\\b"
+    - "\\bstudent\\b|סטודנט"             # אם אתה סטודנט, מחק את השורה
+  exceptions:                  # כותרת שתואמת לאחת מאלה לא נפסלת בגלל exclude_any
+    - "\\blead gen"
+    - "\\blead generation\\b"
+
+experience:
+  # משרה שדורשת יותר שנים מהמספר הזה נפסלת. null = בלי סינון.
+  # נספר רק כשהמספר צמוד למילה כמו experience/ניסיון, בשורה שאינה "יתרון".
+  # בטווח (3-5 years) נספר המספר הנמוך.
+  max_years_required: 4
+  ignore_lines_with: [advantage, "a plus", "nice to have", preferred, bonus, desirable, יתרון]
+
+department:
+  exclude_any: []              # למשל ["^sales", "legal", "finance"]
+
+description:
+  exclude_any: []              # למשל ["security clearance required"]
+
+companies_block: []            # חברות שלא רוצים לראות בכלל (לרוב עדיף לא להשתמש, ולתת לפרופיל להחליט)
+
+max_age_days: 45               # משרות ישנות יותר נסננות
+
+# מקורות שמדווחים על משרות באיחור (techmap: חציון של 3.5 ימים אחרי הפרסום).
+# אצלם הגיל נספר מהיום שהרדאר ראה את המשרה לראשונה, אחרת כמעט כולן נפסלות על "ישנה".
+# (במשיכה הראשונה מהמקור הגיל עדיין נספר מתאריך הפרסום, כדי שלא תגיע הצפה.)
+late_sources: [techmap]

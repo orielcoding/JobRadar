@@ -1,0 +1,54 @@
+From: LinkedIn Job Alerts <jobalerts-noreply@linkedin.com>
+To: me@example.com
+Subject: =?utf-8?b?4oCcZGF0YSBlbmdpbmVlcuKAnTo=?= Acme - Senior Data Engineer
+ and more
+Date: Mon, 28 Sep 2026 07:12:00 +0000
+Message-ID: <alert-1@linkedin.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============2176175969585854080=="
+
+--===============2176175969585854080==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Your job alert for data engineer in Israel
+12 new jobs match your preferences.
+
+Senior Data Engineer
+Acme
+Tel Aviv-Yafo, Tel Aviv District, Israel (Hybrid)
+Actively recruiting
+View job: https://www.linkedin.com/comm/jobs/view/4012345678/?trackingId=3Dab=
+c%3D%3D&refId=3Dxyz
+
+---------------------------------------------------------
+
+Analytics Engineer
+Globex Ltd
+Herzliya, Tel Aviv District, Israel
+2 connections
+View job: https://www.linkedin.com/comm/jobs/view/4087654321/?trackingId=3Ddef
+
+---------------------------------------------------------
+
+See all jobs: https://www.linkedin.com/comm/jobs/search?keywords=3Ddata
+
+--===============2176175969585854080==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<html><body><table>
+<tr><td><a href=3D"https://www.linkedin.com/comm/jobs/view/4012345678/?tracki=
+ngId=3Dabc">Senior Data Engineer</a></td></tr>
+<tr><td><p>Acme =C2=B7 Tel Aviv-Yafo, Tel Aviv District, Israel (Hybrid)</p><=
+/td></tr>
+<tr><td><a href=3D"https://www.linkedin.com/comm/jobs/view/4087654321/?tracki=
+ngId=3Ddef">Analytics Engineer</a></td></tr>
+<tr><td><p>Globex Ltd =C2=B7 Herzliya, Tel Aviv District, Israel</p></td></tr>
+<tr><td><a href=3D"https://www.linkedin.com/comm/jobs/search?keywords=3Ddata"=
+>See all jobs</a></td></tr>
+</table></body></html>
+
+--===============2176175969585854080==--

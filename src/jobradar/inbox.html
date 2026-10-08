@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JobRadar · מעקב</title>
+<style>
+:root{
+  --bg:#f6f5f1;--panel:#ffffff;--fg:#1c1c1e;--muted:#6d6d72;--line:#e4e1d9;--soft:#efede7;
+  --accent:#2f5d50;--accent-fg:#ffffff;--focus:#2f5d50;
+  --review:#c27c0e;--review-bg:#fdf3e1;
+  --apply:#2563a8;--apply-bg:#e7f0fb;
+  --applied:#2f7d4f;--applied-bg:#e5f4ea;
+  --dismissed:#8b8b90;--dismissed-bg:#efefef;
+  --shadow:0 12px 40px rgba(0,0,0,.18);
+}
+:root[data-theme="dark"]{
+  --bg:#131415;--panel:#1c1e20;--fg:#ececec;--muted:#9c9ca3;--line:#2d3033;--soft:#24272a;
+  --accent:#7fc0ab;--accent-fg:#0f1a16;--focus:#7fc0ab;
+  --review:#f0b44c;--review-bg:#3a2e17;--apply:#7fb2ee;--apply-bg:#1b2b40;
+  --applied:#79c99a;--applied-bg:#17301f;--dismissed:#8f8f96;--dismissed-bg:#26282a;--shadow:0 12px 40px rgba(0,0,0,.5);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131415;--panel:#1c1e20;--fg:#ececec;--muted:#9c9ca3;--line:#2d3033;--soft:#24272a;
+  --accent:#7fc0ab;--accent-fg:#0f1a16;--focus:#7fc0ab;
+  --review:#f0b44c;--review-bg:#3a2e17;--apply:#7fb2ee;--apply-bg:#1b2b40;
+  --applied:#79c99a;--applied-bg:#17301f;--dismissed:#8f8f96;--dismissed-bg:#26282a;--shadow:0 12px 40px rgba(0,0,0,.5);
+}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{overflow-x:hidden;margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 "Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--accent)}
+.wrap{padding:16px 20px 56px;max-width:1500px;margin:0 auto}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:-.01em}
+header .sub{color:var(--muted);font-size:13px}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 12px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:600}
+.btn:focus-visible,.card:focus-visible,.chip:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+kbd{font:11px/1 ui-monospace,Consolas,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:2px 5px;background:var(--soft);color:var(--muted)}
+
+/* funnel */
+.funnels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:8px}
+.fcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.fcard h3{margin:0 0 6px;font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.fnums{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+.fnum b{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.fnum span{color:var(--muted);font-size:12px;margin-inline-start:4px}
+.fnum small{display:block;color:var(--muted);font-size:12px}
+.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--soft);margin-top:10px}
+.bar i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:2px 2px 14px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px;vertical-align:middle}
+.s-to_review{--c:var(--review);--cb:var(--review-bg)}
+.s-to_apply{--c:var(--apply);--cb:var(--apply-bg)}
+.s-applied{--c:var(--applied);--cb:var(--applied-bg)}
+.s-dismissed{--c:var(--dismissed);--cb:var(--dismissed-bg)}
+
+/* filters */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:4px 11px;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip .n{opacity:.7;margin-inline-start:4px;font-variant-numeric:tabular-nums}
+.note{color:var(--muted);font-size:12.5px}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.day{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-height:220px;display:flex;flex-direction:column}
+.day.today{border-color:var(--accent)}
+.dhead{padding:8px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline}
+.dhead b{font-size:13px}
+.dhead span{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.dbody{padding:8px;display:flex;flex-direction:column;gap:6px}
+.empty{color:var(--muted);font-size:12px;text-align:center;padding:16px 0}
+.card{all:unset;display:block;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-inline-start:4px solid var(--c);
+  border-radius:8px;padding:7px 9px;box-sizing:border-box;width:100%}
+.card:hover{background:var(--soft)}
+.card.sel{background:var(--cb);border-color:var(--c)}
+.card.s-dismissed{opacity:.55}
+.card.s-applied .t::before{content:"✓ ";color:var(--applied);font-weight:700}
+.card .t{font-weight:600;font-size:13px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .c{color:var(--muted);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .m{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.jlink{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:2px 8px;background:var(--panel)}
+.jlink:hover{border-color:var(--accent);text-decoration:underline}
+.jlink:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.tag{font-size:11px;border-radius:5px;padding:1px 6px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.tag.strong{background:var(--applied-bg);color:var(--applied)}
+.tag.stretch{background:var(--apply-bg);color:var(--apply)}
+
+/* drawer */
+.drawer{position:fixed;top:0;bottom:0;right:0;width:min(460px,100vw);background:var(--panel);box-shadow:var(--shadow);
+  transform:translateX(105%);visibility:hidden;transition:transform .18s ease,visibility 0s .18s;display:flex;flex-direction:column;z-index:10}
+.drawer.open{transform:none;visibility:visible;transition:transform .18s ease}
+.dtop{padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+.dtop .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--c);background:var(--cb);border-radius:99px;padding:3px 10px}
+.x{border:0;background:none;font-size:20px;color:var(--muted);padding:2px 6px}
+.dtop h2{font-size:18px;margin:10px 0 2px;line-height:1.3}
+.dtop .co{color:var(--muted)}
+.dscroll{overflow:auto;padding:12px 18px;flex:1}
+.sec{margin-bottom:14px}
+.sec h4{margin:0 0 4px;font-size:12px;color:var(--muted);font-weight:600}
+.scores{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.score{background:var(--soft);border-radius:8px;padding:6px 8px;text-align:center}
+.score b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.score span{font-size:11px;color:var(--muted)}
+.hint{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:12.5px}
+.hint code{font:12px ui-monospace,Consolas,monospace;direction:ltr;unicode-bidi:embed}
+.actions{border-top:1px solid var(--line);padding:12px 18px 14px;display:grid;gap:8px}
+.abtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.abtn{border:1px solid var(--c);color:var(--c);background:var(--panel);border-radius:10px;padding:9px 6px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px}
+.abtn:hover,.abtn.on{background:var(--cb)}
+.abtn kbd{border-color:currentColor;color:inherit;background:transparent;opacity:.7}
+.reasons{display:none;gap:6px;flex-wrap:wrap}
+.reasons.show{display:flex}
+.reasons input{flex:1 1 100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--bg);color:var(--fg);font:inherit}
+.linkrow{display:flex;gap:8px;flex-wrap:wrap}
+
+/* tailored CV */
+.cvsec{border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+.paper{all:unset;display:block;cursor:zoom-in;width:100%;aspect-ratio:210/297;overflow:hidden;position:relative;background:#fff;
+  border:1px solid var(--line);border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.paper:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.paper iframe{position:absolute;top:0;left:0;width:794px;height:1123px;border:0;transform-origin:0 0;pointer-events:none;
+  background:#fff;transform:scale(calc(var(--pw, 422) / 794))}
+.cvbtns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
+.cvbtns .btn{padding:6px 10px}
+.cvkv{display:grid;grid-template-columns:76px 1fr;gap:8px;font-size:13px;margin:6px 0}
+.cvkv b{color:var(--muted);font-weight:600;font-size:12px}
+.cvkv.risk span{color:var(--review)}
+.cvq{margin:8px 0;font-size:13px}
+.cvq summary{cursor:pointer;font-weight:600}
+.cvq ol{margin:6px 0;padding-inline-start:20px}
+.cvq li{margin-bottom:6px}
+.cvq code{font:12px ui-monospace,Consolas,monospace;direction:ltr;unicode-bidi:embed}
+.cvmeta{margin-top:8px}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;font-size:inherit}
+.cverr{background:var(--review-bg);border:1px solid var(--review);border-radius:8px;padding:7px 10px;margin-bottom:8px;font-size:12.5px}
+.cvrun{display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:6px}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+#cvPaste{width:100%;min-height:150px;margin-top:8px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;
+  background:var(--bg);color:var(--fg);font:13px/1.4 inherit;resize:vertical}
+.cvmodal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;display:flex;align-items:center;justify-content:center;padding:16px}
+.cvbox{background:var(--panel);border-radius:12px;box-shadow:var(--shadow);width:min(880px,100%);height:100%;display:flex;flex-direction:column;overflow:hidden}
+.cvbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.cvbox iframe{flex:1;border:0;background:#fff;width:100%}
+
+/* toast + banner */
+.toast{position:fixed;bottom:16px;right:50%;transform:translateX(50%);background:var(--fg);color:var(--bg);border-radius:10px;padding:9px 14px;
+  display:none;gap:12px;align-items:center;z-index:20;box-shadow:var(--shadow)}
+.toast.show{display:flex}
+.toast button{border:0;background:none;color:inherit;text-decoration:underline;font-weight:600}
+.banner{display:none;background:var(--review-bg);color:var(--fg);border:1px solid var(--review);border-radius:10px;padding:9px 12px;margin-bottom:12px}
+.banner.show{display:block}
+footer{position:fixed;bottom:0;right:0;left:0;background:var(--bg);border-top:1px solid var(--line);padding:6px 20px;color:var(--muted);font-size:12px;display:flex;gap:14px;flex-wrap:wrap}
+@media (max-width:980px){.cal{grid-template-columns:repeat(2,minmax(0,1fr))}.funnels{grid-template-columns:1fr}}
+@media (max-width:560px){.cal{grid-template-columns:1fr}.wrap{padding:12px 16px 64px}footer{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>JobRadar · מעקב משרות</h1>
+    <span class="sub" id="sub"></span>
+    <span class="spacer"></span>
+    <button class="btn primary" id="queueBtn" title="פותח את המשרה הממתינה הבאה">▶ עבור על הממתינות <kbd>Enter</kbd></button>
+    <button class="btn" id="refreshBtn" title="רענון">↻</button>
+  </header>
+  <div class="banner" id="banner"></div>
+  <section class="funnels" id="funnels" aria-label="משפך"></section>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--applied)"></i>הוגש</span>
+    <span><i class="dot" style="background:var(--apply)"></i>בהמתנה להגשה</span>
+    <span><i class="dot" style="background:var(--dismissed)"></i>נדחה לאחר עיון</span>
+    <span><i class="dot" style="background:var(--review)"></i>בהמתנה לעיון</span>
+  </div>
+  <div class="filters" id="filters" role="group" aria-label="סינון"></div>
+  <section class="cal" id="cal" aria-label="השבוע האחרון"></section>
+</div>
+
+<aside class="drawer" id="drawer" aria-label="פרטי משרה">
+  <div class="dtop">
+    <div class="row"><span class="pill" id="dState"></span><button class="x" id="closeBtn" aria-label="סגור">×</button></div>
+    <h2 id="dTitle" dir="auto"></h2>
+    <div class="co" id="dCo" dir="auto"></div>
+  </div>
+  <div class="dscroll" id="dBody"></div>
+  <div class="actions">
+    <div class="abtns">
+      <button class="abtn s-to_apply" data-act="to_apply">📝 להגשה <kbd>A</kbd></button>
+      <button class="abtn s-applied" data-act="applied">✅ הגשתי <kbd>S</kbd></button>
+      <button class="abtn s-dismissed" data-act="dismissed">✕ לא מתאים <kbd>D</kbd></button>
+    </div>
+    <div class="reasons" id="reasons">
+      <button class="chip" data-r="לא התחום שלי">לא התחום שלי</button>
+      <button class="chip" data-r="בכיר מדי / דרישות גבוהות">בכיר מדי</button>
+      <button class="chip" data-r="חסר לי כישור מרכזי">חסר לי כישור מרכזי</button>
+      <button class="chip" data-r="מיקום / מודל עבודה">מיקום</button>
+      <button class="chip" data-r="החברה לא מעניינת אותי">החברה לא מעניינת</button>
+      <button class="chip" data-r="">בלי סיבה</button>
+      <input id="reasonText" placeholder="או כתוב במשפט אחד למה (Enter לאישור) – זה מלמד את המודל">
+    </div>
+    <div class="linkrow">
+      <button class="btn" id="openBtn">↗ פתח את המשרה <kbd>O</kbd></button>
+      <button class="btn" id="undoBtn" hidden>↺ החזר לעיון <kbd>U</kbd></button>
+    </div>
+  </div>
+</aside>
+
+<div class="cvmodal" id="cvModal" hidden role="dialog" aria-label="קו״ח מותאם">
+  <div class="cvbox">
+    <div class="cvbar"><b>קו״ח מותאם</b><span class="spacer"></span>
+      <button class="btn primary" data-cvo="pdf">⤓ פתח PDF</button><button class="btn" data-cvo="note">📝 הערות</button>
+      <button class="x" id="cvClose" aria-label="סגור">×</button></div>
+    <iframe id="cvFrame" title="קו״ח"></iframe>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button id="toastUndo">ביטול</button></div>
+<footer>
+  <span><kbd>Enter</kbd> הממתינה הבאה</span><span><kbd>↑</kbd><kbd>↓</kbd> מעבר בין משרות</span>
+  <span><kbd>O</kbd> פתח</span><span><kbd>A</kbd> להגשה</span><span><kbd>S</kbd> הגשתי</span>
+  <span><kbd>D</kbd> לא מתאים</span><span><kbd>U</kbd> החזר לעיון</span><span><kbd>Esc</kbd> סגור</span>
+</footer>
+
+<script>
+const TOKEN = "__TOKEN__";
+const HE_DAYS = ["א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"];
+const STATE_HE = {to_review:"בהמתנה לעיון", to_apply:"בהמתנה להגשה", applied:"הוגש", dismissed:"נדחה לאחר עיון"};
+const SOURCE_HE = {linkedin_email:"LinkedIn", techmap:"Tech Map", comeet:"Comeet", greenhouse:"Greenhouse", lever:"Lever", manual:"ידני"};
+let DATA = null, FILTER = "all", SEL = null, LAST = null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function iso(d){ const z = n => String(n).padStart(2,"0"); return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`; }
+function lastDays(n){ const out=[]; const t=new Date(); for(let i=n-1;i>=0;i--){ const d=new Date(t); d.setDate(t.getDate()-i); out.push(d);} return out; }
+function dayLabel(d, i, n){ if(i===n-1) return "היום"; if(i===n-2) return "אתמול"; return "יום " + HE_DAYS[d.getDay()]; }
+function since(isoStr){
+  const h = (Date.now() - new Date(isoStr).getTime())/36e5;
+  if (h < 1) return "לפני פחות משעה"; if (h < 24) return `לפני ${Math.round(h)} שעות`;
+  const d = Math.round(h/24); return d === 1 ? "לפני יום" : `לפני ${d} ימים`;
+}
+
+async function load(keepSel=true){
+  try{
+    const r = await fetch("/api/data", {cache:"no-store"});
+    DATA = await r.json();
+    $("banner").classList.remove("show");
+  }catch(e){ return offline(); }
+  render();
+  if (keepSel && SEL) { const it = byId(SEL); it ? openDrawer(it) : closeDrawer(); }
+}
+function offline(){
+  const b=$("banner"); b.textContent="החלון התנתק מהשרת המקומי (אולי המחשב נכנס לשינה). פתח שוב מקיצור הדרך JobRadar או: jobradar inbox";
+  b.classList.add("show");
+}
+const byId = id => DATA.items.find(x => x.id === id);
+
+function render(){
+  const items = DATA.items, open = DATA.open;
+  $("sub").textContent = `${open.to_review} ממתינות לעיון · ${open.to_apply} להגשה` +
+    (open.older_to_review ? ` · עוד ${open.older_to_review} ישנות משבוע לא נבדקו` : "");
+  // funnels
+  const F = DATA.funnels, names = {"2d":"48 השעות האחרונות","7d":"השבוע האחרון","30d":"החודש האחרון"};
+  $("funnels").innerHTML = Object.keys(names).map(k => {
+    const f = F[k], tot = Math.max(f.surfaced,1);
+    const seg = (n, v) => n ? `<i style="width:${100*n/tot}%;background:var(${v})" title="${n}"></i>` : "";
+    return `<div class="fcard"><h3>${names[k]}</h3><div class="fnums">
+      <div class="fnum"><b>${f.surfaced}</b><span>הגיעו</span></div>
+      <div class="fnum"><b>${f.reviewed}</b><span>עיינתי</span><small>${f.reviewed_pct ?? "–"}% מהמשרות</small></div>
+      <div class="fnum"><b>${f.applied}</b><span>הגשתי</span><small>${f.applied_pct ?? "–"}% ממה שעיינתי</small></div></div>
+      <div class="bar">${seg(f.applied,"--applied")}${seg(f.to_apply,"--apply")}${seg(f.dismissed,"--dismissed")}${seg(f.to_review,"--review")}</div></div>`;
+  }).join("");
+  // filters
+  const cnt = s => items.filter(x => x.state === s).length;
+  const defs = [["all","הכל",items.length],["to_review","בהמתנה לעיון",cnt("to_review")],["to_apply","בהמתנה להגשה",cnt("to_apply")],
+                ["applied","הוגש",cnt("applied")],["dismissed","נדחה",cnt("dismissed")]];
+  $("filters").innerHTML = defs.map(([k,l,n]) => `<button class="chip" data-f="${k}" aria-pressed="${FILTER===k}">${l}<span class="n">${n}</span></button>`).join("")
+    + `<span class="note">· מוצגות רק משרות מ-7 הימים האחרונים</span>`;
+  // calendar
+  const days = lastDays(7);
+  $("cal").innerHTML = days.map((d,i) => {
+    const key = iso(d), list = items.filter(x => x.day === key && (FILTER==="all" || x.state===FILTER));
+    const pend = items.filter(x => x.day === key && x.state === "to_review").length;
+    return `<div class="day ${i===6?"today":""}"><div class="dhead"><b>${dayLabel(d,i,7)} · ${d.getDate()}.${d.getMonth()+1}</b>
+      <span>${list.length}${pend ? ` · ${pend} ממתינות` : ""}</span></div>
+      <div class="dbody">${list.length ? list.map(card).join("") : `<div class="empty">—</div>`}</div></div>`;
+  }).join("");
+}
+function card(x){
+  const tags = [];
+  if (x.kind === "deep" && x.scores) tags.push(`<span class="tag ${x.verdict==="strong"||x.verdict==="good"?"strong":"stretch"}">${x.scores.capability}·${x.scores.desire}·${x.scores.screen_pass} ${esc(x.verdict)}</span>`);
+  else tags.push(`<span class="tag">בלי תיאור${x.triage ? " · "+esc(x.triage) : ""}</span>`);
+  if (x.app_status && !["applied","withdrawn"].includes(x.app_status)) tags.push(`<span class="tag">${esc(x.app_status)}</span>`);
+  const marks = (x.favorite ? " ⭐" : "") + (x.contacts ? " 🤝" : "") + (x.cv_running ? " ⏳" : x.has_cv ? " 📄" : "");
+  const link = x.url ? `<a class="jlink" href="${esc(x.url)}" target="_blank" rel="noopener" title="${esc(x.url)}">↗ ${linkLabel(x.url)}</a>` : "";
+  return `<div class="card s-${x.state} ${SEL===x.id?"sel":""}" role="button" tabindex="0" data-id="${x.id}" title="${esc(STATE_HE[x.state])}">
+    <div class="t" dir="auto">${esc(x.title)}</div><div class="c" dir="auto">${esc(x.company)}${marks}</div><div class="m">${tags.join("")}</div>${link}</div>`;
+}
+
+function linkLabel(url){
+  try{ const h = new URL(url).hostname.replace(/^www\./, "");
+       return /(^|\.)linkedin\.com$/.test(h) ? "LinkedIn" : "אתר המשרה"; }catch(e){ return "קישור"; }
+}
+
+function openDrawer(x){
+  SEL = x.id;
+  document.querySelectorAll(".card.sel").forEach(c => c.classList.remove("sel"));
+  const el = document.querySelector(`.card[data-id="${x.id}"]`); if (el){ el.classList.add("sel"); el.scrollIntoView({block:"nearest"}); }
+  const st = $("dState"); st.className = "pill s-" + x.state; st.innerHTML = `<i class="dot" style="background:var(--c)"></i>${STATE_HE[x.state]}`;
+  $("dTitle").textContent = x.title;
+  $("dCo").textContent = [x.company + (x.favorite?" ⭐":""), x.location, SOURCE_HE[x.source] || x.source, "הופיעה " + since(x.surfaced_at)].filter(Boolean).join(" · ");
+  let h = "";
+  if (x.kind === "deep" && x.scores){
+    h += `<div class="scores"><div class="score"><b>${x.scores.capability ?? "–"}</b><span>יכולת</span></div>
+      <div class="score"><b>${x.scores.desire ?? "–"}</b><span>רצון</span></div><div class="score"><b>${x.scores.screen_pass ?? "–"}</b><span>מעבר סינון</span></div>
+      <div class="score"><b style="font-size:14px;line-height:25px">${esc(x.verdict)}</b><span>פסק דין</span></div></div>`;
+  }
+  if (x.why_yes) h += `<div class="sec"><h4>${x.kind==="deep" ? "למה כן" : "למה עברה את הסינון המהיר"}</h4><div dir="auto">${esc(x.why_yes)}</div></div>`;
+  if (x.why_no) h += `<div class="sec"><h4>למה לא</h4><div dir="auto">${esc(x.why_no)}</div></div>`;
+  if (x.known.length) h += `<div class="sec"><h4>🤝 מכיר שם</h4><div>${x.known.map(esc).join(", ")} – שווה לבקש הפניה לפני שמגישים</div></div>`;
+  else if (x.contacts) h += `<div class="sec"><h4>🤝 קשרים</h4><div>${x.contacts} קשרים בלינקדין בחברה</div></div>`;
+  if (x.app_status && x.app_status !== "withdrawn") h += `<div class="sec"><h4>תהליך הגשה</h4><div>${esc(x.app_status)} · עדכון: jobradar apps update</div></div>`;
+  if (x.kind === "light") h += `<div class="hint">אין למשרה תיאור, אז היא לא נבדקה לעומק. להערכה מלאה: העתק את התיאור לקובץ והרץ<br><code>jobradar paste ${x.id} --file desc.txt</code></div>`;
+  if (x.note && x.state === "dismissed") h += `<div class="sec" style="margin-top:12px"><h4>סיבת הדחייה</h4><div dir="auto">${esc(x.note)}</div></div>`;
+  h += `<div class="sec cvsec" id="cvSec"><h4>📄 קו״ח מותאם</h4><div id="cvBody"><div class="note">טוען…</div></div></div>`;
+  $("dBody").innerHTML = h;
+  loadCV(x.id);
+  document.querySelectorAll(".abtn").forEach(b => b.classList.toggle("on", b.dataset.act === x.state));
+  $("undoBtn").hidden = x.state === "to_review";
+  $("reasons").classList.remove("show");
+  $("drawer").classList.add("open");
+}
+function closeDrawer(){ SEL = null; $("drawer").classList.remove("open"); document.querySelectorAll(".card.sel").forEach(c => c.classList.remove("sel")); }
+
+// ---- tailored CV (same method as /cv; one model call from the Pro quota)
+const CV_STEP = {queued:"ממתין בתור (קו״ח אחד בכל פעם)…", posting:"מאתר את תיאור המשרה…", posting_ats:"קורא את המשרה ממערכת הגיוס…",
+  posting_page:"קורא את דף המשרה…", posting_search:"מחפש את המשרה באתר החברה…", writing:"כותב את הקו״ח (2–5 דקות)…", pdf:"מייצר PDF…"};
+let CV_POLL = null, CV_SHOWN = null;
+async function loadCV(id){
+  clearTimeout(CV_POLL);
+  let st;
+  try{ st = await (await fetch(`/api/cv?id=${id}`, {cache:"no-store"})).json(); }catch(e){ return; }
+  if (SEL !== id || !$("cvBody")) return;
+  const x = byId(id), b = $("cvBody");
+  if (st.state === "queued" || st.state === "running"){
+    const key = `${id}:${st.step}`;
+    if (CV_SHOWN !== key) b.innerHTML = `<div class="cvrun"><span class="spin"></span><span>${esc(CV_STEP[st.step] || st.step)}</span></div>
+      <div class="note">אפשר להמשיך לעבוד או לסגור את החלון. הקו״ח יופיע כאן כשיהיה מוכן.</div>`;
+    CV_SHOWN = key;
+    CV_POLL = setTimeout(() => loadCV(id), 3000);
+    return;
+  }
+  CV_SHOWN = null;
+  if (x && x.cv_running) load(true);   // the card still shows ⏳: refresh once
+  if (st.state === "done"){
+    const m = st.meta, qs = m.open_questions || [], props = m.master_cv_proposals || [];
+    b.innerHTML = `
+      ${st.last_error ? `<div class="cverr">הניסיון האחרון נכשל: ${esc(st.last_error)}</div>` : ""}
+      <button class="paper" data-cvo="view" title="הגדל"><iframe src="/cv/${id}.html?t=${Date.now()}" tabindex="-1" scrolling="no"></iframe></button>
+      <div class="cvbtns">
+        <button class="btn primary" data-cvo="pdf">⤓ פתח PDF</button>
+        <button class="btn" data-cvo="view">⤢ הגדל</button>
+        <button class="btn" data-cvo="note">📝 הערות</button>
+        <button class="btn" data-cvo="folder">📁 תיקייה</button>
+      </div>
+      ${m.pages > 1 ? `<div class="cverr">ה-PDF יצא ${m.pages} עמודים. כדאי לקצר (בצ׳אט: /cv ${id}).</div>` : ""}
+      ${m.headline ? `<div class="cvkv"><b>כותרת</b><span dir="ltr">${esc(m.headline)}</span></div>` : ""}
+      ${m.summary_he ? `<div class="cvkv"><b>מה נבחר</b><span dir="auto">${esc(m.summary_he)}</span></div>` : ""}
+      ${m.main_risk ? `<div class="cvkv risk"><b>סיכון עיקרי</b><span dir="auto">${esc(m.main_risk)}</span></div>` : ""}
+      ${qs.length ? `<details class="cvq"><summary>${qs.length} שאלות פתוחות (נבנה עם ברירות המחדל)</summary><ol>${qs.map(q =>
+          `<li dir="auto">${esc(q.question)}<div class="note">ברירת מחדל: ${esc(q.default_used)}</div></li>`).join("")}</ol>
+          <div class="note">לענות ולשפר: בצ׳אט עם Claude, <code>/cv ${id}</code></div></details>` : ""}
+      ${props.length ? `<div class="note">${props.length} הצעות לעדכון קו״ח האב ממתינות לאישור (בהערות; מאשרים בצ׳אט).</div>` : ""}
+      <div class="note cvmeta">${esc(m.posting_source ? "תיאור המשרה: " + m.posting_source : "")}${m.created_at ? " · נוצר " + since(m.created_at) : ""}
+        · <button class="linkbtn" data-cvo="make">צור מחדש</button></div>`;
+    fitPaper();
+  } else if (st.state === "need_posting"){
+    b.innerHTML = `<div class="hint">לא מצאתי את תיאור המשרה אוטומטית (לינקדין לא נפתח, ובאתר החברה לא נמצאה אותה משרה).
+        פתח את המשרה, העתק את כל התיאור והדבק כאן:</div>
+      <textarea id="cvPaste" dir="auto" placeholder="הדבק כאן את תיאור המשרה…"></textarea>
+      <div class="cvbtns"><button class="btn primary" data-cvo="make-paste">📄 צור קו״ח עם התיאור הזה</button>
+        <button class="btn" data-cvo="job">↗ פתח את המשרה</button></div>`;
+  } else {
+    b.innerHTML = `${st.state === "error" ? `<div class="cverr">${esc(st.error)}</div>` : ""}
+      <button class="btn primary" data-cvo="make">📄 ${st.state === "error" ? "נסה שוב" : "צור קו״ח למשרה הזו"}</button>
+      <div class="note" style="margin-top:6px">אותה שיטה כמו /cv: תיאור המשרה נשאב מהקישור (לא מלינקדין), והקו״ח נבנה מקו״ח האב.
+        קריאת מודל אחת מהמכסה (ועוד חיפוש אם אין תיאור), 2–5 דקות.</div>`;
+  }
+}
+async function cvAction(what){
+  const id = SEL; if (!id) return;
+  if (what === "view") return openCvModal(id);
+  if (what === "job") return openInChrome(id);
+  if (what === "make" || what === "make-paste"){
+    const posting = what === "make-paste" ? $("cvPaste").value.trim() : null;
+    if (what === "make-paste" && (!posting || posting.length < 50)) return toast("הדבק את תיאור המשרה המלא", false);
+    try{
+      const r = await fetch("/api/cv", {method:"POST", headers:{"Content-Type":"application/json","X-Token":TOKEN},
+                                        body: JSON.stringify({id, posting})});
+      if (!r.ok) throw new Error((await r.json()).error);
+    }catch(e){ return toast("לא הצלחתי להתחיל: " + e.message, false); }
+    const x = byId(id); if (x) x.cv_running = true;
+    return loadCV(id);
+  }
+  try{
+    const r = await fetch("/api/cv/open", {method:"POST", headers:{"Content-Type":"application/json","X-Token":TOKEN},
+                                           body: JSON.stringify({id, what})});
+    if (!r.ok) throw new Error((await r.json()).error);
+  }catch(e){ toast("לא הצלחתי לפתוח: " + e.message, false); }
+}
+function fitPaper(){ document.querySelectorAll(".paper").forEach(p => p.style.setProperty("--pw", p.clientWidth)); }
+window.addEventListener("resize", fitPaper);
+function openCvModal(id){
+  $("cvFrame").src = `/cv/${id}.html?t=${Date.now()}`;
+  $("cvModal").hidden = false; $("cvClose").focus();
+}
+function closeCvModal(){ $("cvModal").hidden = true; $("cvFrame").src = "about:blank"; }
+
+function queue(){ // newest first: fresh jobs are worth applying to early
+  return DATA.items.filter(x => x.state === "to_review");
+}
+function nextPending(afterId){
+  const q = queue(); if (!q.length) return null;
+  const all = DATA.items, i = all.findIndex(x => x.id === afterId);
+  return all.slice(i+1).find(x => x.state === "to_review") || q[0];
+}
+function visibleOrder(){ return [...document.querySelectorAll(".card")].map(c => +c.dataset.id); }
+
+async function setState(id, state, note){
+  const x = byId(id); if (!x) return;
+  const prev = {state: x.state, note: x.note};
+  const wasPending = x.state === "to_review";
+  try{
+    const r = await fetch("/api/state", {method:"POST", headers:{"Content-Type":"application/json","X-Token":TOKEN},
+                                         body: JSON.stringify({id, state, note: note ?? null})});
+    if (!r.ok) throw new Error((await r.json()).error);
+  }catch(e){ return offline(); }
+  LAST = {id, prev};
+  toast(`#${id} → ${STATE_HE[state]}`);
+  await load(false);
+  const nxt = wasPending && state !== "to_review" ? nextPending(id) : byId(id);
+  nxt ? openDrawer(nxt) : (closeDrawer(), toast("אין עוד משרות שממתינות לעיון 🎉", false));
+}
+function toast(msg, undo=true){
+  $("toastMsg").textContent = msg; $("toastUndo").hidden = !undo;
+  const t = $("toast"); t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 5000);
+}
+async function undo(){
+  if (!LAST) return; const {id, prev} = LAST; LAST = null;
+  await setState(id, prev.state, prev.note); const x = byId(id); if (x) openDrawer(x);
+}
+function act(state){
+  if (!SEL) return;
+  if (state === "dismissed"){ $("reasons").classList.add("show"); $("reasonText").focus(); return; }
+  setState(SEL, state);
+}
+
+// events
+document.addEventListener("click", e => {
+  const cvo = e.target.closest("[data-cvo]"); if (cvo) return cvAction(cvo.dataset.cvo);
+  if (e.target.closest("#cvClose") || e.target.id === "cvModal") return closeCvModal();
+  const jl = e.target.closest(".jlink");
+  if (jl){ e.preventDefault(); return openInChrome(+jl.closest(".card").dataset.id); }  // job link -> Chrome, not the side panel
+  const c = e.target.closest(".card"); if (c) return openDrawer(byId(+c.dataset.id));
+  const f = e.target.closest("[data-f]"); if (f){ FILTER = f.dataset.f; render(); return; }
+  const a = e.target.closest("[data-act]"); if (a) return act(a.dataset.act);
+  const r = e.target.closest("[data-r]"); if (r) return setState(SEL, "dismissed", r.dataset.r || null);
+});
+$("reasonText").addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); setState(SEL, "dismissed", e.target.value.trim() || null); e.target.value=""; } if (e.key === "Escape"){ $("reasons").classList.remove("show"); e.stopPropagation(); } });
+$("closeBtn").onclick = closeDrawer;
+$("refreshBtn").onclick = () => load();
+$("queueBtn").onclick = () => { const q = queue(); q.length ? openDrawer(q[0]) : toast("אין משרות שממתינות לעיון 🎉", false); };
+async function openInChrome(id){
+  try{
+    const r = await fetch("/api/open", {method:"POST", headers:{"Content-Type":"application/json","X-Token":TOKEN},
+                                        body: JSON.stringify({id})});
+    if (!r.ok) throw new Error((await r.json()).error);
+  }catch(e){  // e.g. an older server without /api/open: open it here rather than not at all
+    const x = byId(id); if (x && x.url) window.open(x.url, "_blank", "noopener");
+  }
+}
+$("openBtn").onclick = () => { const x = SEL && byId(SEL); if (x && x.url) openInChrome(x.id); };
+$("undoBtn").onclick = () => SEL && setState(SEL, "to_review", "");
+$("toastUndo").onclick = undo;
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && !$("cvModal").hidden) return closeCvModal();
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === "escape") return closeDrawer();
+  const fc = e.target.closest && e.target.closest(".card");
+  if (fc && (k === "enter" || k === " ") && !e.target.closest(".jlink")){ e.preventDefault(); return openDrawer(byId(+fc.dataset.id)); }
+  if (k === "enter" && !SEL){ e.preventDefault(); return $("queueBtn").click(); }
+  if (k === "arrowdown" || k === "arrowup" || k === "j" || k === "k"){
+    e.preventDefault(); const ord = visibleOrder(); if (!ord.length) return;
+    const i = ord.indexOf(SEL), d = (k === "arrowdown" || k === "j") ? 1 : -1;
+    const n = ord[Math.min(Math.max(i + d, 0), ord.length - 1)] ?? ord[0]; return openDrawer(byId(n));
+  }
+  if (!SEL) return;
+  if ("oasduz".includes(k) && k.length === 1) e.preventDefault();
+  if (k === "o") $("openBtn").click();
+  else if (k === "a") act("to_apply");
+  else if (k === "s") act("applied");
+  else if (k === "d") act("dismissed");
+  else if (k === "u") $("undoBtn").click();
+  else if (k === "z") undo();
+});
+setInterval(() => fetch("/api/ping", {cache:"no-store"}).catch(offline), 30000);
+load();
+</script>
+</body>
+</html>

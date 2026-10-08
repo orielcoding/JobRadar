@@ -1,0 +1,21 @@
+.env
+data/
+reports/
+config/config.yaml
+config/companies.yaml
+config/filters.yaml
+profile/profile.md
+profile/cv.md
+profile/interview_notes.md
+profile/*.draft.md
+scheduling/*.plist
+scheduling/*.ps1
+scheduling/*.txt
+__pycache__/
+*.egg-info/
+.venv/
+profile/tailored/
+archive/**/inputs/
+# personal content (kept local; public copies are *.example.*)
+archive/
+prompts/cv_tailor.md

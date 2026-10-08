@@ -1,0 +1,20 @@
+{
+  "total": 3,
+  "jobPostings": [
+    {"title": "Data Scientist", "externalPath": "/job/Israel-Tel-Aviv/Data-Scientist_JR1001", "locationsText": "Israel, Tel Aviv", "postedOn": "Posted Today", "bulletFields": ["JR1001"]},
+    {"title": "Software Engineer", "externalPath": "/job/Israel-Yokneam/Software-Engineer_JR1002-1", "locationsText": "2 Locations", "postedOn": "Posted 3 Days Ago", "bulletFields": ["JR1002"]},
+    {"title": "Product Manager", "externalPath": "/job/Israel-Haifa/Product-Manager_JR1003", "locationsText": "Israel, Haifa", "postedOn": "Posted 30+ Days Ago", "bulletFields": ["JR1003"]}
+  ],
+  "facets": [
+    {"facetParameter": "jobFamilyGroup", "descriptor": "Job Category", "values": [
+      {"descriptor": "Engineering", "id": "cat1", "count": 40}]},
+    {"facetParameter": "locationMainGroup", "values": [
+      {"facetParameter": "locationHierarchy1", "descriptor": "Locations", "values": [
+        {"descriptor": "United States", "id": "us1", "count": 900},
+        {"descriptor": "Israel", "id": "il1", "count": 414}]},
+      {"facetParameter": "locations", "descriptor": "Sites", "values": [
+        {"descriptor": "Israel, Tel Aviv", "id": "site-ta", "count": 228},
+        {"descriptor": "Israel, Yokneam", "id": "site-yk", "count": 150}]}
+    ]}
+  ]
+}

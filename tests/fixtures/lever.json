@@ -1,0 +1,31 @@
+[
+ {
+  "id": "aaa-111",
+  "text": "Analytics Engineer",
+  "categories": {
+   "location": "Tel Aviv",
+   "team": "Data",
+   "department": "R&D",
+   "commitment": "Full-time",
+   "allLocations": [
+    "Tel Aviv",
+    "Remote - Israel"
+   ]
+  },
+  "description": "<div><b>About</b></div>",
+  "descriptionPlain": "About the role. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. Build dbt models and data products. ",
+  "lists": [
+   {
+    "text": "Requirements",
+    "content": "<li>SQL</li><li>dbt</li>"
+   }
+  ],
+  "additional": "<div>Benefits</div>",
+  "additionalPlain": "Benefits galore.",
+  "hostedUrl": "https://jobs.lever.co/acme/aaa-111",
+  "applyUrl": "https://jobs.lever.co/acme/aaa-111/apply",
+  "createdAt": 1759000000000,
+  "workplaceType": "hybrid",
+  "country": "IL"
+ }
+]

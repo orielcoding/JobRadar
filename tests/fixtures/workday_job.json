@@ -1,0 +1,15 @@
+{
+  "jobPostingInfo": {
+    "id": "abc123",
+    "title": "Data Scientist",
+    "jobDescription": "<p>Build models for &amp; with our customers.</p><ul><li><p>3&#43; years of experience in Python</p></li></ul>",
+    "location": "Israel, Tel Aviv",
+    "additionalLocations": ["Israel, Yokneam"],
+    "postedOn": "Posted Today",
+    "startDate": "2026-10-07",
+    "timeType": "Full time",
+    "jobReqId": "JR1001",
+    "externalUrl": "https://acme.wd5.myworkdayjobs.com/AcmeCareers/job/Israel-Tel-Aviv/Data-Scientist_JR1001"
+  },
+  "hiringOrganization": {"name": "Acme"}
+}
