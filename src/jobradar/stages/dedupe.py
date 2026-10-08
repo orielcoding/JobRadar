@@ -5,9 +5,11 @@ description) and from a LinkedIn alert email (title only). Rule: same
 normalized company + very similar title (+ compatible location) = duplicate,
 and the copy WITH a description wins.
 
-A copy only counts as the same job while it is still inside the live window
-(filters.max_age_days, aged like hard_filter: job_age_days). An older copy - e.g. a
-posting the company bumped again after a week - is a different, new appearance.
+Two copies are the same job only when they appeared around the same time: some
+pair of their dates (posted_at, first_seen_at) is within filters.max_age_days.
+So a late listing of a job (techmap a few days after the career board) is a
+duplicate, while a posting the company bumped again a week later is a new
+appearance.
 
 Today: string similarity. Upgrade seam: embeddings (docs/ROADMAP.md).
 """
@@ -19,7 +21,7 @@ from difflib import SequenceMatcher
 from urllib.parse import urlparse
 
 from jobradar.models import Status
-from jobradar.stages.hard_filter import job_age_days
+from jobradar.textutil import age_days
 
 TITLE_SIMILARITY = 0.9
 _HEBREW = re.compile(r"[֐-׿]")
@@ -42,12 +44,15 @@ def _loc_compatible(a: str, b: str) -> bool:
     return bool(ta & tb) or "remote" in a or "remote" in b
 
 
-def in_window(job, max_age_days, late_sources=()) -> bool:
-    """True when the job is still inside the live window (no window configured = always)."""
+def same_appearance(a, b, max_age_days) -> bool:
+    """True when two copies appeared within max_age_days of each other (no window configured = always)."""
     if not max_age_days:
         return True
-    age = job_age_days(job, late_sources)
-    return age is None or age <= float(max_age_days)
+    da = [x for x in (age_days(a["posted_at"]), age_days(a["first_seen_at"])) if x is not None]
+    db = [x for x in (age_days(b["posted_at"]), age_days(b["first_seen_at"])) if x is not None]
+    if not da or not db:
+        return True
+    return min(abs(x - y) for x in da for y in db) <= float(max_age_days)
 
 
 class DedupeStage:
@@ -57,14 +62,13 @@ class DedupeStage:
         store = ctx.store
         dupes = 0
         window = (ctx.config.filters or {}).get("max_age_days")
-        late = set((ctx.config.filters or {}).get("late_sources") or [])
         for job in store.jobs_by_status(Status.NEW):
             has_desc = len(job["description"] or "") > 200
             for other in store.jobs_same_company(job["company_norm"], job["id"]):
                 # Within one career board, two postings with the same title are usually
                 # real separate openings. Within an aggregator (techmap lists the same job
                 # from LinkedIn and from Comeet) the link host differs - that is a duplicate.
-                if not in_window(other, window, late):
+                if not same_appearance(job, other, window):
                     continue
                 if other["source"] == job["source"] and _host(other["url"]) == _host(job["url"]):
                     continue

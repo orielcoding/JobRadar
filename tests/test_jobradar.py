@@ -666,18 +666,17 @@ class TestDedupeLocation(unittest.TestCase):
 
 
 class TestDedupeWindow(unittest.TestCase):
-    def test_in_window(self):
-        from jobradar.stages.dedupe import in_window
+    def test_same_appearance(self):
+        from jobradar.stages.dedupe import same_appearance
         now = datetime.now(timezone.utc)
-        fresh = {"posted_at": (now - timedelta(hours=20)).isoformat(), "first_seen_at": now.isoformat()}
-        week = {"posted_at": (now - timedelta(days=7)).isoformat(), "first_seen_at": now.isoformat()}
-        no_date = {"posted_at": None, "first_seen_at": (now - timedelta(days=5)).isoformat()}
-        self.assertTrue(in_window(fresh, 2))
-        self.assertFalse(in_window(week, 2))      # bumped again after a week: not a duplicate
-        self.assertFalse(in_window(no_date, 2))
-        self.assertTrue(in_window(week, None))
-        late = {"source": "techmap", **week}               # a late source counts from first seen
-        self.assertTrue(in_window(late, 2, {"techmap"}))
+        ago = lambda d: (now - timedelta(days=d)).isoformat()  # noqa: E731
+        board = {"posted_at": ago(4), "first_seen_at": ago(4)}           # career board, seen when posted
+        late_listing = {"posted_at": ago(4), "first_seen_at": ago(0)}    # techmap lists it 4 days later
+        bumped = {"posted_at": ago(0), "first_seen_at": ago(0)}          # same title re-posted today
+        self.assertTrue(same_appearance(late_listing, board, 2))
+        self.assertFalse(same_appearance(bumped, board, 2))
+        self.assertTrue(same_appearance(bumped, board, None))
+        self.assertTrue(same_appearance(bumped, {"posted_at": None, "first_seen_at": None}, 2))
 
 
 class TestLateSources(unittest.TestCase):
