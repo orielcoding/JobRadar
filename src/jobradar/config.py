@@ -76,6 +76,7 @@ DEFAULTS: dict[str, Any] = {
     "deep": {
         "max_per_run": 12,
         "max_description_chars": 12000,
+        "workers": 3,             # deep calls in parallel (same quota, less waiting)
     },
     "thresholds": {
         "min_capability": 7,

@@ -15,6 +15,7 @@ not by the model - so you can tune it without touching prompts.
 from __future__ import annotations
 
 import logging
+from concurrent.futures import CancelledError, ThreadPoolExecutor, as_completed
 
 from jobradar.examples import deep_examples
 from jobradar.favorites import Favorites
@@ -83,19 +84,28 @@ def build_deep_input(cfg, store, job, exclude_example_id=None, favorite: bool = 
     ])
 
 
-def evaluate_job(ctx, job, stage_name: str = "deep", exclude_example_id=None) -> dict:
-    """Run one deep evaluation and store it. Raises LLMError / UsageLimitReached."""
+def prepare_job(ctx, job, exclude_example_id=None) -> dict:
+    """Everything one deep call needs, read from the DB (main thread only)."""
     cfg = ctx.config
     favorite = Favorites(cfg).is_favorite(job["company"])
     system, version = load_prompt(cfg, "deep_eval.md")
     # Never show the evaluator the candidate's own rating of the job it is evaluating.
     exclude = exclude_example_id if exclude_example_id is not None else job["id"]
-    user = build_deep_input(cfg, ctx.store, job, exclude, favorite)
-    res = ctx.backend.complete_json(
-        system=system, user=user, schema=DEEP_SCHEMA, model=cfg.get("llm.deep_model"),
-        purpose="deep", context={"job": dict(job)},
+    return {"job": job, "favorite": favorite, "system": system, "version": version,
+            "user": build_deep_input(cfg, ctx.store, job, exclude, favorite)}
+
+
+def call_model(ctx, prep: dict):
+    """The model call alone: no DB access, so it can run in a worker thread."""
+    return ctx.backend.complete_json(
+        system=prep["system"], user=prep["user"], schema=DEEP_SCHEMA, model=ctx.config.get("llm.deep_model"),
+        purpose="deep", context={"job": dict(prep["job"])},
     )
-    result = res.data
+
+
+def finish_job(ctx, prep: dict, res, stage_name: str = "deep") -> dict:
+    """Check the scores, decide, store the evaluation (main thread only)."""
+    job, result = prep["job"], res.data
     scores = result.setdefault("scores", {})
     for k in ("capability", "desire", "screen_pass"):
         try:
@@ -103,9 +113,15 @@ def evaluate_job(ctx, job, stage_name: str = "deep", exclude_example_id=None) ->
         except (TypeError, ValueError):
             scores[k] = 1
     apply_method_checks(result, job["id"])
-    result["decision"] = decide(result, cfg, favorite)
-    ctx.store.add_evaluation(job["id"], stage_name, result, res.model, version, res.meta, ctx.run_id)
+    result["decision"] = decide(result, ctx.config, prep["favorite"])
+    ctx.store.add_evaluation(job["id"], stage_name, result, res.model, prep["version"], res.meta, ctx.run_id)
     return result
+
+
+def evaluate_job(ctx, job, stage_name: str = "deep", exclude_example_id=None) -> dict:
+    """Run one deep evaluation and store it. Raises LLMError / UsageLimitReached."""
+    prep = prepare_job(ctx, job, exclude_example_id)
+    return finish_job(ctx, prep, call_model(ctx, prep), stage_name)
 
 
 class DeepEvalStage:
@@ -116,27 +132,39 @@ class DeepEvalStage:
             return {"skipped": "llm blocked"}
         store = ctx.store
         limit = int(ctx.overrides.get("max_deep") or ctx.config.get("deep.max_per_run", 12))
+        workers = max(1, int(ctx.config.get("deep.workers", 3)))
         stats = {"evaluated": 0, "notify": 0, "errors": 0}
-        for job in store.jobs_by_status(Status.DEEP_PENDING, limit=limit):
-            try:
-                result = evaluate_job(ctx, job)
-            except UsageLimitReached as e:
-                log.warning("usage limit reached during deep eval - will continue next run (%s)", e)
-                ctx.llm_blocked = True
-                break
-            except LLMError as e:
-                log.error("deep eval failed for #%s: %s", job["id"], e)
-                stats["errors"] += 1
-                store.bump_attempts([job["id"]])
-                if job["attempts"] + 1 >= MAX_ATTEMPTS:
-                    store.set_status(job["id"], Status.ERROR, f"deep eval failed: {str(e)[:200]}")
+        # Model calls run in parallel threads; every DB read and write stays in this thread.
+        preps = [prepare_job(ctx, job) for job in store.jobs_by_status(Status.DEEP_PENDING, limit=limit)]
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {pool.submit(call_model, ctx, p): p for p in preps}
+            for fut in as_completed(futures):
+                job = futures[fut]["job"]
+                try:
+                    result = finish_job(ctx, futures[fut], fut.result())
+                except UsageLimitReached as e:
+                    if not ctx.llm_blocked:
+                        log.warning("usage limit reached during deep eval - will continue next run (%s)", e)
+                    ctx.llm_blocked = True
+                    for f in futures:  # calls not started yet stay DEEP_PENDING for the next run
+                        f.cancel()
+                    continue
+                except CancelledError:
+                    continue
+                except LLMError as e:
+                    log.error("deep eval failed for #%s: %s", job["id"], e)
+                    stats["errors"] += 1
+                    store.bump_attempts([job["id"]])
+                    if job["attempts"] + 1 >= MAX_ATTEMPTS:
+                        store.set_status(job["id"], Status.ERROR, f"deep eval failed: {str(e)[:200]}")
+                    store.commit()
+                    continue
+                d = result["decision"]
+                store.set_status(job["id"], Status.EVALUATED, result.get("verdict"),
+                                 decision="notify" if d["notify"] else "skip")
                 store.commit()
-                continue
-            d = result["decision"]
-            store.set_status(job["id"], Status.EVALUATED, result.get("verdict"),
-                             decision="notify" if d["notify"] else "skip")
-            store.commit()
-            stats["evaluated"] += 1
-            stats["notify"] += int(d["notify"])
+                stats["evaluated"] += 1
+                stats["notify"] += int(d["notify"])
+                log.info("deep #%s %s @ %s: %s", job["id"], job["title"], job["company"], result.get("verdict"))
         stats["left_pending"] = len(store.jobs_by_status(Status.DEEP_PENDING))
         return stats
