@@ -1,0 +1,33 @@
+{
+ "status": 200,
+ "data": {
+  "count": 2,
+  "positions": [
+   {
+    "id": 1001,
+    "displayJobId": "200001",
+    "name": "Data Scientist",
+    "locations": [
+     "Israel, Tel Aviv, Herzliya"
+    ],
+    "postedTs": 1791331200,
+    "creationTs": 1791300000,
+    "department": "Data Science",
+    "workLocationOption": "onsite",
+    "positionUrl": "/careers/job/1001"
+   },
+   {
+    "id": 1002,
+    "displayJobId": "200002",
+    "name": "Product Manager",
+    "locations": [
+     "Israel, Multiple Locations, Multiple Locations"
+    ],
+    "postedTs": 1780000000,
+    "department": "Product Management",
+    "workLocationOption": "hybrid",
+    "positionUrl": "/careers/job/1002"
+   }
+  ]
+ }
+}

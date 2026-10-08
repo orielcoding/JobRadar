@@ -1,0 +1,16 @@
+{
+ "status": 200,
+ "data": {
+  "id": 1001,
+  "displayJobId": "200001",
+  "name": "Data Scientist",
+  "locations": [
+   "Israel, Tel Aviv, Herzliya"
+  ],
+  "postedTs": 1791331200,
+  "department": "Data Science",
+  "jobDescription": "<b>Overview</b><br><div><p>Model customer data &amp; ship.</p></div><ul><li>3+ years of experience with Python</li></ul>",
+  "workLocationOption": "onsite",
+  "positionUrl": "/careers/job/1001"
+ }
+}

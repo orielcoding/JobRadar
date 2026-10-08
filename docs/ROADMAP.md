@@ -12,7 +12,7 @@
 
 | רכיב | היום | השדרוג | הסימן | איפה |
 |---|---|---|---|---|
-| מערכות גיוס | Greenhouse, Lever, Ashby, Workable, Comeet, Workday (חברות גדולות: Nvidia, Intel, KLA, Applied Materials) | SmartRecruiters, BambooHR, Personio, Recruitee (לכולן API ציבורי). אתרים פנימיים של ענקיות (Amazon, Microsoft) כמקור ייעודי לכל חברה | `detect` נכשל על חברות שחשובות לך | `sources/` |
+| מערכות גיוס | Greenhouse, Lever, Ashby, Workable, Comeet, Workday (Nvidia, Intel, KLA, Applied Materials), Eightfold (Microsoft, Qualcomm), Google Careers (דף התוצאות, לא API) | SmartRecruiters, BambooHR, Personio, Recruitee (לכולן API ציבורי). Amazon (`amazon.jobs` JSON) כמקור ייעודי. Apple ו-Meta לא מתוכננים (אתרים פנימיים, Meta חוסמת בוטים) | `detect` נכשל על חברות שחשובות לך / Google Careers נכשל ב-`test-sources` (שינוי פורמט או captcha) | `sources/` |
 | גילוי חברות | רשימה ידנית + `detect` | הצעות אוטומטיות של חברות דומות לאלה שדירגת good (מרשימות סטארטאפים או מחברות שהופיעו בהתראות לינקדין) | הרשימה מתיישנת / אתה מוצא משרות טובות ידנית שהרדאר לא ראה | פקודה חדשה `suggest-companies` |
 | לינקדין | קריאת מיילי התראות (כותרת, חברה, מיקום) | כפתור "שלח לרדאר" מהדפדפן (תוסף או bookmarklet ששולח את תיאור המשרה מהעמוד הפתוח), במקום `paste` ידני | הרבה "התאמות קלות" ש‑`paste` מעייף | `paste` / שרת מקומי קטן |
 | AllJobs / Drushim | parser כללי לפי `link_pattern` (לא אומת) | parser ייעודי לכל אתר | הכותרות שמתקבלות לא נקיות | `sources/email_parsers.py` |

@@ -144,7 +144,7 @@ FILTER_DEFAULTS: dict[str, Any] = {
     "description": {"exclude_any": []},
     "companies_block": [],
     "max_age_days": 45,
-    "late_sources": ["techmap"],  # aggregators that list jobs days late: age counts from first seen
+    "late_sources": ["techmap", "google"],  # job dates lag publication: age counts from first seen
 }
 
 

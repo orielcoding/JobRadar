@@ -118,6 +118,34 @@ class TestParsers(unittest.TestCase):
         self.assertEqual(match_text("https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/External/jobs")["site"],
                          "External")
 
+    def test_eightfold(self):
+        from jobradar.sources.eightfold import parse_position
+        search = load("eightfold_search.json")["data"]["positions"]
+        details = load("eightfold_position.json")["data"]
+        j = parse_position({**search[0], **details}, "Microsoft", "apply.careers.microsoft.com")
+        self.assertEqual(j.key, "eightfold:1001")
+        self.assertEqual(j.url, "https://apply.careers.microsoft.com/careers/job/1001")
+        self.assertEqual((j.workplace, j.department), ("onsite", "Data Science"))
+        self.assertIn("3+ years of experience with Python", j.description)
+        self.assertIn("& ship", j.description)
+        self.assertTrue(j.posted_at.startswith("2026-10-07"))
+        listed = parse_position(search[1], "Microsoft", "apply.careers.microsoft.com")
+        self.assertEqual((listed.description, listed.workplace), ("", "hybrid"))
+
+    def test_google_careers(self):
+        from jobradar.sources.google_careers import parse_page
+        jobs, total = parse_page((FIX / "google_careers.html").read_text(encoding="utf-8"))
+        self.assertEqual((len(jobs), total), (2, 2))
+        g, w = jobs
+        self.assertEqual(g.key, "google:111")
+        self.assertEqual(g.location, "Tel Aviv, Israel; Haifa, Israel")
+        self.assertIn("Join the Ads team & help.", g.description)
+        self.assertIn("2 years of experience with Python", g.description)
+        self.assertTrue(g.posted_at.startswith("2026-10-07"))
+        self.assertEqual(w.company, "Waze")                  # Waze jobs are listed on Google Careers
+        with self.assertRaises(RuntimeError):
+            parse_page("<html>captcha</html>")
+
     def test_workday(self):
         from jobradar.sources import workday as wd
         listing = load("workday_jobs.json")

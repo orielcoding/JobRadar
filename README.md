@@ -1,6 +1,6 @@
 # JobRadar · רדאר משרות אישי
 
-כלי שרץ כל בוקר על המחשב שלך. הוא אוסף משרות חדשות מאתרי הקריירה של חברות ומהתראות מייל (כולל לינקדין), מסנן אותן ומעריך כל משרה מול הפרופיל שלך בעזרת Claude. כשיש משהו שבאמת מתאים, נשלח פינג לטלפון.
+כלי שרץ כל בוקר על המחשב שלך. הוא אוסף משרות חדשות מאתרי הקריירה של חברות (כולל Google, Microsoft, Nvidia ו-Intel) ומהתראות מייל (כולל לינקדין), מסנן אותן ומעריך כל משרה מול הפרופיל שלך בעזרת Claude. כשיש משהו שבאמת מתאים, נשלח פינג לטלפון.
 
 המודל רץ דרך **Claude Code המקומי שלך על מנוי הפרו** (`claude -p`). אין API, אין עלות נוספת ואין שרת.
 
@@ -11,7 +11,9 @@
  Ashby       │                       location,      haiku,              sonnet,                 report ─▶ daily .md
  Workable    │                       title, age     25 jobs / call      1 job / call
  Comeet      │                                                            ▲
- Workday     │
+ Workday     │ (Nvidia, Intel, KLA, AMAT)
+ Eightfold   │ (Microsoft, Qualcomm)
+ Google      │ (Google Careers)
  techmap ────┤ (daily Israeli job feed by role)       your ratings: good / ok / bad + "why"
  Gmail ──────┘ (LinkedIn / AllJobs alerts)
                                                      your network: contacts · conversations · applications

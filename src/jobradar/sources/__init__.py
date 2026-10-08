@@ -39,7 +39,8 @@ def register(ats: str):
 
 def _load_builtin() -> None:
     # Importing registers them.
-    from jobradar.sources import ashby, comeet, greenhouse, lever, workable, workday  # noqa: F401
+    from jobradar.sources import (ashby, comeet, eightfold, google_careers, greenhouse, lever,  # noqa: F401
+                                  workable, workday)
 
 
 def build_sources(config, only: str | None = None) -> tuple[list, list[str]]:
