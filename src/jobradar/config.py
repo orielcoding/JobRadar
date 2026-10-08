@@ -79,10 +79,10 @@ DEFAULTS: dict[str, Any] = {
         "workers": 3,             # deep calls in parallel (same quota, less waiting)
     },
     "thresholds": {
-        "min_capability": 7,
-        "min_desire": 6,
-        "notify_verdicts": ["strong", "good"],
-        "cv_gap_flag": 3,  # capability - screen_pass >= this -> "tailor your CV" flag
+        "notify_verdicts": ["strong_apply", "apply"],  # deep-v5 apply decisions that ping
+        "min_desire": 5,
+        "min_capability": 7,  # deep-v4 rows only
+        "cv_gap_flag": 3,  # fit score - screen_pass >= this -> "tailor your CV" / "ask for a referral" flag
     },
     "examples": {
         "triage_max": 20,
@@ -102,9 +102,9 @@ DEFAULTS: dict[str, Any] = {
     },
     "favorites": {
         "skip_triage": True,
-        "min_capability": 6,
-        "min_desire": 5,
-        "notify_verdicts": ["strong", "good", "stretch"],
+        "notify_verdicts": ["strong_apply", "apply", "long_shot"],
+        "min_desire": 6,
+        "min_capability": 6,  # deep-v4 rows only
         "rank_bonus": 4,
     },
     "techmap": {"enabled": False, "categories": []},

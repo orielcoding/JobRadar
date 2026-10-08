@@ -310,7 +310,8 @@ def cmd_add(cfg: Config, args) -> int:
 def cmd_eval(cfg: Config, args) -> int:
     from jobradar.evaluate import run_eval
     ctx = _ctx(cfg, args)
-    run_eval(ctx, args.limit)
+    ids = [int(x) for x in args.ids.split(",")] if args.ids else None
+    run_eval(ctx, args.limit, ids)
     return 0
 
 
@@ -648,6 +649,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     d = sub.add_parser("eval", help="מדידה: כמה המודל מסכים עם הדירוגים שלך")
     d.add_argument("--limit", type=int, default=20)
+    d.add_argument("--ids", help="רק משרות מסוימות, למשל 7036,6538")
     d.add_argument("--backend")
     d.set_defaults(fn=cmd_eval)
 

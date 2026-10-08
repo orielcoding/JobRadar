@@ -12,8 +12,18 @@ from datetime import date
 
 from jobradar.models import Status
 from jobradar.network import STRENGTH_TXT
+from jobradar.scoring import DECISION_LABEL_HE, is_v5
 
 _STATUS_ICON = {"met": "✅", "partial": "🟡", "transferable": "🔁", "missing": "❌"}
+_GAP_ICON = {"none": "✅", "learnable": "🔁", "risk": "🟡", "cap": "🟠", "blocker": "❌"}
+_GAP_HE = {"none": "יש", "learnable": "נלמד בעבודה", "risk": "מוריד סיכוי", "cap": "מגביל ל'סיכוי נמוך'",
+           "blocker": "חוסם"}
+REJECTED = ("no", "big_no")
+
+
+def decision_label(ev: dict) -> str:
+    v = ev.get("verdict") or ""
+    return DECISION_LABEL_HE.get(v, v)
 
 
 def render_recipe(rec, d: dict | None = None) -> list[str]:
@@ -40,7 +50,9 @@ def render_recipe(rec, d: dict | None = None) -> list[str]:
 
 
 def main_reason(ev: dict) -> str:
-    """Why a job was rejected: the gate, else a capability gap, else the screen objection."""
+    """The one-line reason (deep-v5). deep-v4: the gate, else a capability gap, else the objection."""
+    if ev.get("reason_line"):
+        return ev["reason_line"]
     gate = (ev.get("job_analysis") or {}).get("gate") or {}
     if gate.get("result") in ("stop_scope", "stop_profession"):
         return gate.get("reason", "")
@@ -53,25 +65,41 @@ def render_evaluation(job, ev: dict, net_ctx: dict | None = None) -> str:
     s, d, a = ev.get("scores", {}), ev.get("decision", {}), ev.get("job_analysis", {})
     flag = " 🔔" if d.get("notify") else ""
     star = "⭐ " if d.get("favorite") else ""
+    v5 = is_v5(ev)
+    head = f"**{decision_label(ev)}** — {ev.get('reason_line', '')}" if v5 else f"verdict: **{ev.get('verdict')}**"
     out = [
         f"### #{job['id']} {star}{job['title']} @ {job['company']}{flag}",
-        f"{job['location'] or ''} · [קישור]({job['url']}) · verdict: **{ev.get('verdict')}**",
+        f"{job['location'] or ''} · [קישור]({job['url']}) · {head}",
         "",
-        f"| יכולת | רצון | מעבר סינון |\n|---|---|---|\n| {s.get('capability')} | {s.get('desire')} | {s.get('screen_pass')} |",
+        f"| {'התאמה' if v5 else 'יכולת'} | רצון | מעבר סינון |\n|---|---|---|\n"
+        f"| {s.get('capability')} | {s.get('desire')} | {s.get('screen_pass')} |",
         "",
         f"**מה התפקיד באמת:** {a.get('role_summary', '')}",
         f"**הבעיה שהם פותרים:** {a.get('real_problem', '')}",
         f"**בכירות:** {a.get('seniority_signal', '')}",
         "",
-        "**דרישות הכרחיות**",
     ]
-    gate = a.get("gate") or {}
-    if gate:
-        out.insert(-2, f"**שער רמה:** {gate.get('result')} (משרה {gate.get('role_scope')}, "
-                       f"מועמד {gate.get('candidate_scope')}) — {gate.get('reason', '')}")
-    for r in a.get("must_haves", []):
-        extra = f" [{r.get('weight')}, gap: {r.get('gap')}]" if r.get("gap") else ""
-        out.append(f"- {_STATUS_ICON.get(r.get('status'), '•')} {r.get('requirement')}{extra} — {r.get('evidence')}")
+    if v5:
+        bn = ev.get("big_no_check") or {}
+        if bn.get("rule") not in (None, "none"):
+            out.append(f"**סיבת פסילה:** {bn.get('rule')} — {bn.get('evidence', '')}")
+        elif (ev.get("checks") or {}).get("far_fetched"):
+            out.append("**סיבת פסילה:** הרבה פערים ורצון נמוך (B7)")
+        pa = a.get("primary_activity") or {}
+        out.append(f"**העבודה המרכזית:** {pa.get('activity', '')} — {pa.get('status', '')} ({pa.get('candidate_evidence', '')})")
+        out.append("\n**דרישות**")
+        for r in a.get("requirements", []):
+            g = r.get("gap")
+            out.append(f"- {_GAP_ICON.get(g, '•')} {r.get('requirement')} [{_GAP_HE.get(g, g)}] — {r.get('evidence')}")
+    else:
+        out.append("**דרישות הכרחיות**")
+        gate = a.get("gate") or {}
+        if gate:
+            out.insert(-2, f"**שער רמה:** {gate.get('result')} (משרה {gate.get('role_scope')}, "
+                           f"מועמד {gate.get('candidate_scope')}) — {gate.get('reason', '')}")
+        for r in a.get("must_haves", []):
+            extra = f" [{r.get('weight')}, gap: {r.get('gap')}]" if r.get("gap") else ""
+            out.append(f"- {_STATUS_ICON.get(r.get('status'), '•')} {r.get('requirement')}{extra} — {r.get('evidence')}")
     if a.get("nice_to_haves"):
         out.append("\n**נחמד שיהיה**")
         for r in a["nice_to_haves"]:
@@ -87,8 +115,12 @@ def render_evaluation(job, ev: dict, net_ctx: dict | None = None) -> str:
         out.append(f"**בדיקת סינון:** {sc.get('family')}/{sc.get('level')} · שנים {sc.get('years_countable')} "
                    f"מתוך {sc.get('years_required')} · {sig} · תקרות {caps} · מגביל: {sc.get('binding')}")
     rat = ev.get("score_rationale", {})
-    out += ["", f"**נימוק הציונים:** יכולת: {rat.get('capability', '')} | רצון: {rat.get('desire', '')} | "
-                f"סינון: {rat.get('screen_pass', '')}"]
+    if v5:
+        out += ["", f"**רצון:** {(ev.get('desire') or {}).get('rationale', '')}",
+                f"**מעבר סינון:** {rat.get('screen_pass', '')}"]
+    else:
+        out += ["", f"**נימוק הציונים:** יכולת: {rat.get('capability', '')} | רצון: {rat.get('desire', '')} | "
+                    f"סינון: {rat.get('screen_pass', '')}"]
     if ev.get("red_flags"):
         out.append("**דגלים אדומים:** " + "; ".join(ev["red_flags"]))
     out.append(f"**ההתנגדות החזקה של מגייס:** {ev.get('recruiter_objection', '')}")
@@ -135,17 +167,16 @@ def _job_cell(r, favs, notified: bool = False) -> str:
     return f"{star}[{_cell(r['title'], 70)} @ {_cell(r['company'], 30)}]({r['url']}){bell}"
 
 
-_EVAL_HEAD = ("| # | משרה | יכולת | רצון | סינון | פסק דין | למה כן | למה לא |\n"
-              "|---|---|---|---|---|---|---|---|")
+_EVAL_HEAD = ("| # | משרה | החלטה | רצון | סינון | למה |\n"
+              "|---|---|---|---|---|---|")
 
 
 def _eval_rows(evs, favs) -> list[str]:
     out = [_EVAL_HEAD]
     for r, ev in evs:
         s, d = ev.get("scores", {}), ev.get("decision", {})
-        out.append(f"| {r['id']} | {_job_cell(r, favs, d.get('notify'))} | {s.get('capability')} | "
-                   f"{s.get('desire')} | {s.get('screen_pass')} | {ev.get('verdict')} | "
-                   f"{_cell(ev.get('pitch'))} | {_cell(main_reason(ev))} |")
+        out.append(f"| {r['id']} | {_job_cell(r, favs, d.get('notify'))} | {decision_label(ev)} | "
+                   f"{s.get('desire')} | {s.get('screen_pass')} | {_cell(main_reason(ev), 200)} |")
     return out
 
 
@@ -167,8 +198,8 @@ def write_report(cfg, rows, light, stats: dict, store=None, triage_no=None):
     path = folder / f"{date.today().isoformat()}.md"
     evs = [(r, json.loads(r["eval_result"])) for r in rows]
     evs.sort(key=lambda x: x[1].get("decision", {}).get("rank", 0), reverse=True)
-    review = [(r, ev) for r, ev in evs if ev.get("verdict") != "no"]
-    rejected = [(r, ev) for r, ev in evs if ev.get("verdict") == "no"]
+    review = [(r, ev) for r, ev in evs if ev.get("verdict") not in REJECTED]
+    rejected = [(r, ev) for r, ev in evs if ev.get("verdict") in REJECTED]
     triage_no = triage_no or []
     st = {k: v for k, v in stats.items() if not k.startswith("_")}
     hf, tr = st.get("hard_filter", {}), st.get("triage", {})

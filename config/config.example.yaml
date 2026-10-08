@@ -26,10 +26,9 @@ deep:
   workers: 3                   # כמה הערכות מעמיקות רצות במקביל (אותה מכסה, פחות המתנה)
 
 thresholds:                    # מתי לשלוח פינג (ההחלטה בקוד, לא במודל)
-  min_capability: 7
-  min_desire: 6
-  notify_verdicts: [strong, good]
-  cv_gap_flag: 3               # יכולת פחות מעבר־סינון ≥ 3 → סימון "כדאי להתאים קו״ח"
+  notify_verdicts: [strong_apply, apply]   # להגיש עכשיו / להגיש. long_shot מוצג בדוח ובחלון, בלי פינג
+  min_desire: 5
+  cv_gap_flag: 3               # ציון התאמה פחות מעבר־סינון ≥ 3 → סימון "כדאי להתאים קו״ח" או "לבקש הפניה"
 
 notify:
   channels: [ntfy]             # ntfy | telegram | email | console (אפשר כמה)
@@ -40,9 +39,8 @@ notify:
 
 favorites:                     # חברות שסימנת favorite: true ב-companies.yaml
   skip_triage: true            # מדלגות על הסינון המהיר וישר להערכה מעמיקה
-  min_capability: 6            # רף פינג נמוך יותר מהרגיל
-  min_desire: 5
-  notify_verdicts: [strong, good, stretch]
+  notify_verdicts: [strong_apply, apply, long_shot]   # רף פינג נמוך יותר: גם "סיכוי נמוך"
+  min_desire: 6                # בלי זה, long_shot ברצון 5 (למשל Google gTech) היה שולח פינג
 
 # חלון המעקב (jobradar inbox): מקומי בלבד, http://127.0.0.1:<port>. ראה docs/TRACKER.md
 tracker:

@@ -8,7 +8,7 @@ The pipeline ends at "here is a match". The tracker picks up from there:
   dismissed   נדחה לאחר עיון  you looked and decided no (optional one-line reason)
 
 "Surfaced" = everything the radar showed you: light matches (passed triage, no
-description) and deep evaluations whose verdict is not "no". Rows are created
+description) and deep evaluations whose verdict is not "no" / "big_no". Rows are created
 lazily by `sync()`, so the pipeline stages stay untouched (they still talk only
 through job status). Your decisions also become implicit ratings (labels with
 origin "tracker") unless you already rated the job yourself, so the evaluator
@@ -62,7 +62,7 @@ class Tracker:
                       l.label, l.note AS label_note, l.created_at AS labeled_at
                FROM jobs j LEFT JOIN labels l ON l.job_id = j.id AND l.origin != 'tracker'
                WHERE j.id NOT IN (SELECT job_id FROM job_tracking)
-                 AND (j.status = ? OR (j.status = ? AND coalesce(j.status_reason, '') != 'no'))""",
+                 AND (j.status = ? OR (j.status = ? AND coalesce(j.status_reason, '') NOT IN ('no', 'big_no')))""",
             (Status.LIGHT_MATCH.value, Status.EVALUATED.value)).fetchall()
         now = now_iso()
         for r in rows:
@@ -193,6 +193,7 @@ class Tracker:
                 "kind": "deep" if deep else "light", "has_description": r["desc_len"] > 200,
                 "verdict": deep.get("verdict") or "", "triage": tri.get("verdict") or "",
                 "scores": {k: scores.get(k) for k in ("capability", "desire", "screen_pass")} if scores else None,
+                "reason_line": deep.get("reason_line") or "",
                 "why_yes": deep.get("pitch") or tri.get("reason") or "",
                 "why_no": main_reason(deep) if deep else "",
                 "favorite": bool(is_favorite(r["company"])),

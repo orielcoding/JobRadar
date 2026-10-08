@@ -16,6 +16,7 @@ import logging
 
 from jobradar.favorites import Favorites
 from jobradar.network import Network, describe_contacts
+from jobradar.scoring import DECISION_LABEL_HE
 from jobradar.stages.hard_filter import job_age_days
 from jobradar.textutil import truncate
 
@@ -46,7 +47,11 @@ def format_match(job, ev: dict, net_ctx: dict | None = None, favorite: bool = Fa
     s = ev.get("scores", {})
     d = ev.get("decision", {})
     title = f"{'⭐' if favorite else '🎯'} {job['title']} @ {job['company']}"
-    lines = [f"יכולת {s.get('capability')} · רצון {s.get('desire')} · מעבר סינון {s.get('screen_pass')}"]
+    if ev.get("reason_line"):  # deep-v5
+        lines = [f"{DECISION_LABEL_HE.get(ev.get('verdict'), ev.get('verdict'))} — {truncate(ev['reason_line'], 200)}",
+                 f"רצון {s.get('desire')} · מעבר סינון {s.get('screen_pass')}"]
+    else:
+        lines = [f"יכולת {s.get('capability')} · רצון {s.get('desire')} · מעבר סינון {s.get('screen_pass')}"]
     if d.get("advice") == "referral":
         lines.append("🤝 הקו״ח לא יעבור סינון קר: עדיף דרך הפניה (jobradar net at)")
     elif d.get("advice") == "tailor" or d.get("cv_gap"):

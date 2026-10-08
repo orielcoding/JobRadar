@@ -232,6 +232,8 @@ footer{position:fixed;bottom:0;right:0;left:0;background:var(--bg);border-top:1p
 <script>
 const TOKEN = "__TOKEN__";
 const HE_DAYS = ["א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"];
+const VERDICT_HE = {strong_apply: "להגיש עכשיו", apply: "להגיש", long_shot: "סיכוי נמוך", big_no: "לא רלוונטי"};
+const STRONG = new Set(["strong", "good", "strong_apply", "apply"]);
 const STATE_HE = {to_review:"בהמתנה לעיון", to_apply:"בהמתנה להגשה", applied:"הוגש", dismissed:"נדחה לאחר עיון"};
 const SOURCE_HE = {linkedin_email:"LinkedIn", techmap:"Tech Map", comeet:"Comeet", greenhouse:"Greenhouse", lever:"Lever", manual:"ידני"};
 let DATA = null, FILTER = "all", SEL = null, LAST = null;
@@ -295,7 +297,7 @@ function render(){
 }
 function card(x){
   const tags = [];
-  if (x.kind === "deep" && x.scores) tags.push(`<span class="tag ${x.verdict==="strong"||x.verdict==="good"?"strong":"stretch"}">${x.scores.capability}·${x.scores.desire}·${x.scores.screen_pass} ${esc(x.verdict)}</span>`);
+  if (x.kind === "deep" && x.scores) tags.push(`<span class="tag ${STRONG.has(x.verdict)?"strong":"stretch"}">${x.scores.capability}·${x.scores.desire}·${x.scores.screen_pass} ${esc(VERDICT_HE[x.verdict] || x.verdict)}</span>`);
   else tags.push(`<span class="tag">בלי תיאור${x.triage ? " · "+esc(x.triage) : ""}</span>`);
   if (x.app_status && !["applied","withdrawn"].includes(x.app_status)) tags.push(`<span class="tag">${esc(x.app_status)}</span>`);
   const marks = (x.favorite ? " ⭐" : "") + (x.contacts ? " 🤝" : "") + (x.cv_running ? " ⏳" : x.has_cv ? " 📄" : "");
@@ -318,12 +320,13 @@ function openDrawer(x){
   $("dCo").textContent = [x.company + (x.favorite?" ⭐":""), x.location, SOURCE_HE[x.source] || x.source, "הופיעה " + since(x.surfaced_at)].filter(Boolean).join(" · ");
   let h = "";
   if (x.kind === "deep" && x.scores){
-    h += `<div class="scores"><div class="score"><b>${x.scores.capability ?? "–"}</b><span>יכולת</span></div>
+    h += `<div class="scores"><div class="score"><b>${x.scores.capability ?? "–"}</b><span>${x.reason_line ? "התאמה" : "יכולת"}</span></div>
       <div class="score"><b>${x.scores.desire ?? "–"}</b><span>רצון</span></div><div class="score"><b>${x.scores.screen_pass ?? "–"}</b><span>מעבר סינון</span></div>
-      <div class="score"><b style="font-size:14px;line-height:25px">${esc(x.verdict)}</b><span>פסק דין</span></div></div>`;
+      <div class="score"><b style="font-size:14px;line-height:25px">${esc(VERDICT_HE[x.verdict] || x.verdict)}</b><span>החלטה</span></div></div>`;
   }
+  if (x.reason_line) h += `<div class="sec"><h4>בשורה אחת</h4><div dir="auto">${esc(x.reason_line)}</div></div>`;
   if (x.why_yes) h += `<div class="sec"><h4>${x.kind==="deep" ? "למה כן" : "למה עברה את הסינון המהיר"}</h4><div dir="auto">${esc(x.why_yes)}</div></div>`;
-  if (x.why_no) h += `<div class="sec"><h4>למה לא</h4><div dir="auto">${esc(x.why_no)}</div></div>`;
+  if (x.why_no && x.why_no !== x.reason_line) h += `<div class="sec"><h4>למה לא</h4><div dir="auto">${esc(x.why_no)}</div></div>`;
   if (x.known.length) h += `<div class="sec"><h4>🤝 מכיר שם</h4><div>${x.known.map(esc).join(", ")} – שווה לבקש הפניה לפני שמגישים</div></div>`;
   else if (x.contacts) h += `<div class="sec"><h4>🤝 קשרים</h4><div>${x.contacts} קשרים בלינקדין בחברה</div></div>`;
   if (x.app_status && x.app_status !== "withdrawn") h += `<div class="sec"><h4>תהליך הגשה</h4><div>${esc(x.app_status)} · עדכון: jobradar apps update</div></div>`;

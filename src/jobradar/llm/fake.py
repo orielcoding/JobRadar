@@ -48,21 +48,30 @@ class FakeBackend:
 
 
 def fake_deep_result(title: str, cap: int, desire: int | None = None, screen: int | None = None) -> dict:
-    """A deep-v4-shaped evaluation with the given capability (tests and dry runs)."""
+    """A deep-v5-shaped evaluation whose fit roughly follows `cap` (tests and dry runs):
+    cap <= 4 -> a big-no rule; 5-6 -> partial primary + 1 risk; 7 -> met + 1 risk; 8+ -> met, no risk."""
+    from jobradar.scoring import decision_for
     desire = min(10, cap) if desire is None else desire
     screen = max(1, cap - 3) if screen is None else screen
-    return {
+    status = "absent" if cap <= 4 else ("partial" if cap <= 6 else "met")
+    reqs = [{"requirement": "fake requirement", "kind": "skill", "evidence": "fake", "gap": "none"}]
+    if 5 <= cap <= 7:
+        reqs.append({"requirement": "fake risk", "kind": "practice", "evidence": "fake", "gap": "risk"})
+    result = {
         "job_analysis": {
             "role_summary": f"fake summary of {title}",
             "real_problem": "fake",
-            "seniority_signal": "S2: fake",
-            "gate": {"role_scope": "S2", "candidate_scope": "S2", "result": "pass", "reason": "fake"},
-            "must_haves": [{"requirement": "fake requirement", "weight": "primary", "evidence": "fake",
-                            "status": "met", "gap": "none"}],
+            "seniority_signal": "fake",
+            "primary_activity": {"activity": "fake activity", "candidate_evidence": "fake", "status": status},
+            "requirements": reqs,
             "nice_to_haves": [],
         },
-        "capability_calc": {"gap_points": 0, "band": 8, "adjustments": [], "result": cap},
+        "big_no_check": {"rule": "B2_out_family" if cap <= 4 else "none", "evidence": "fake"},
         "red_flags": [],
+        "desire": {"rationale": "fake", "score": desire},
+        "risk_points": 0,
+        "apply_decision": "long_shot",
+        "reason_line": f"fake reason for {title}",
         "cv_tailoring": {"cv_language": "en", "keywords": ["fake"], "headline": "Fake Headline",
                          "summary": ["fake summary"], "section_order": ["summary", "experience"],
                          "entries": [{"entry": "Fake Role", "lines": [{"src": "Fake line", "text": "",
@@ -74,8 +83,11 @@ def fake_deep_result(title: str, cap: int, desire: int | None = None, screen: in
                                      "results": 1},
                          "adjustments": [], "caps": [], "binding": "years"},
         "recruiter_objection": "fake objection",
-        "score_rationale": {"capability": "fake", "desire": "fake", "screen_pass": "fake"},
-        "scores": {"capability": cap, "desire": desire, "screen_pass": screen},
+        "score_rationale": {"screen_pass": "fake"},
+        "scores": {"screen_pass": screen},
         "pitch": "fake pitch",
-        "verdict": "strong" if cap >= 8 else ("good" if cap >= 7 else ("stretch" if cap >= 5 else "no")),
     }
+    from jobradar.scoring import risk_points_for
+    result["risk_points"] = risk_points_for(result)
+    result["apply_decision"] = decision_for(result)
+    return result

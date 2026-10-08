@@ -1,15 +1,17 @@
-"""Deterministic parts of the deep-v4 scoring method (prompts/deep_eval.md).
+"""Deterministic parts of the evaluation method (prompts/deep_eval.md).
 
-The model judges the inputs (gate, must-have weights and gaps, screen signals,
-caps). The arithmetic on top of them is fixed, so code recomputes it:
+The model judges the inputs (big-no check, primary activity, gap per requirement,
+desire, screen signals and caps). The arithmetic on top of them is fixed, so code
+recomputes it:
 
-  capability_from_analysis  Part A5 of the prompt (band table, adjustments, caps)
-  screen_from_check         Part C4 of the prompt (weights, base, caps)
-  verdict_for               Part D of the prompt
+  deep-v5 (now)
+    risk_points_for / decision_for   Part A step 6 (the apply decision, incl. far-fetched B7)
+    fit_score                        display / ranking number derived from the decision fields
+    screen_from_check                Part B4 (weights, base, caps)
+  deep-v4 (old rows, still readable)
+    capability_from_analysis, verdict_for
 
-Phase 1 (now): the model's numbers are kept; mismatches with the recomputed
-values are stored in `decision` and logged, so `jobradar eval` can show them.
-The verdict IS taken from code: it is a pure rule over the scores.
+The decision IS taken from code; mismatches with the model's own are recorded.
 """
 
 from __future__ import annotations
@@ -124,6 +126,53 @@ def verdict_for(result: dict) -> str:
     if cap >= 7:
         return "good"
     return "stretch"
+
+
+# --- deep-v5: apply decision -------------------------------------------------
+
+DECISION_LABEL_HE = {"strong_apply": "להגיש עכשיו", "apply": "להגיש", "long_shot": "סיכוי נמוך, שווה לשקול",
+                     "big_no": "לא רלוונטי"}
+_PRIMARY_PTS = {"met": 0, "partial": 1, "absent": 2}
+
+
+def is_v5(result: dict) -> bool:
+    return "big_no_check" in result
+
+
+def risk_points_for(result: dict) -> int:
+    """`risk` and `cap` requirements, plus the primary activity (met 0, partial 1, absent 2)."""
+    a = result.get("job_analysis") or {}
+    pts = sum(1 for r in a.get("requirements") or [] if r.get("gap") in ("risk", "cap"))
+    return pts + _PRIMARY_PTS.get((a.get("primary_activity") or {}).get("status"), 0)
+
+
+def big_no_rule(result: dict) -> str:
+    return ((result.get("big_no_check") or {}).get("rule") or "none")
+
+
+def decision_for(result: dict) -> str:
+    """Part A step 6: the first rule that matches."""
+    a = result.get("job_analysis") or {}
+    primary = (a.get("primary_activity") or {}).get("status")
+    gaps = [r.get("gap") for r in a.get("requirements") or []]
+    pts = risk_points_for(result)
+    desire = int(((result.get("desire") or {}).get("score")) or (result.get("scores") or {}).get("desire") or 0)
+    if big_no_rule(result) != "none":
+        return "big_no"
+    if primary == "met" and pts == 0 and desire >= 8 and "(inferred)" not in (a.get("primary_activity") or {}).get("activity", ""):
+        return "strong_apply"
+    if primary != "absent" and pts <= 2 and desire >= 5 and "cap" not in gaps:
+        return "apply"
+    if pts >= 3 and desire <= 4:
+        return "big_no"  # B7: far-fetched and unwanted
+    return "long_shot"
+
+
+def fit_score(result: dict) -> int:
+    """A 1-10 number for display, ranking and the CV advice: 2 for a big-no rule, else 8 - risk points (min 3)."""
+    if big_no_rule(result) != "none":
+        return 2
+    return max(3, 8 - risk_points_for(result))
 
 
 def advice_for(result: dict, gap_flag: int) -> str | None:

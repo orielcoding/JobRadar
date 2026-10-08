@@ -1,6 +1,8 @@
 """JSON Schemas for the LLM answers. The field ORDER matters: the model fills
 fields top to bottom, so analysis fields come before the scores they justify."""
 
+TRIAGE_RULES = ["none", "out_family", "blocker_skill", "dealbreaker", "uninteresting_company"]
+
 TRIAGE_SCHEMA = {
     "type": "object",
     "properties": {
@@ -10,10 +12,11 @@ TRIAGE_SCHEMA = {
                 "type": "object",
                 "properties": {
                     "job_id": {"type": "string"},
-                    "verdict": {"type": "string", "enum": ["yes", "maybe", "no"]},
+                    "rule": {"type": "string", "enum": TRIAGE_RULES},
                     "reason": {"type": "string"},
+                    "verdict": {"type": "string", "enum": ["yes", "maybe", "no"]},
                 },
-                "required": ["job_id", "verdict", "reason"],
+                "required": ["job_id", "rule", "reason", "verdict"],
             },
         }
     },
@@ -31,44 +34,6 @@ _REQ = {
 }
 
 _SCORE = {"type": "integer", "minimum": 1, "maximum": 10}
-
-# --- deep-v4: capability method (archive/briefs/2026-10-01-method-design/outputs/capability_method.md)
-_MUST = {
-    "type": "object",
-    "properties": {
-        "requirement": {"type": "string"},
-        "weight": {"type": "string", "enum": ["primary", "core", "supporting"]},
-        "evidence": {"type": "string"},  # "<source>: <pointer>; asked Lx, shown Ly"
-        "status": {"type": "string", "enum": ["met", "partial", "transferable", "missing"]},
-        "gap": {"type": "string", "enum": ["none", "ramp", "months", "absent"]},
-    },
-    "required": ["requirement", "weight", "evidence", "status", "gap"],
-}
-
-_GATE = {
-    "type": "object",
-    "properties": {
-        "role_scope": {"type": "string", "enum": ["S1", "S2", "S3", "S4"]},
-        "candidate_scope": {"type": "string", "enum": ["S1", "S2", "S3", "S4"]},
-        "result": {"type": "string", "enum": ["pass", "scope_stretch", "stop_scope", "stop_profession"]},
-        "reason": {"type": "string"},
-    },
-    "required": ["role_scope", "candidate_scope", "result", "reason"],
-}
-
-CAPABILITY_ADJUSTMENTS = ["ramp_pileup", "scope_stretch", "proven_in_role", "proven_above_role",
-                          "cap_vague", "cap_title_only"]
-
-_CAP_CALC = {
-    "type": "object",
-    "properties": {
-        "gap_points": {"type": "integer", "minimum": 0},
-        "band": {"type": "integer", "minimum": 1, "maximum": 8},
-        "adjustments": {"type": "array", "items": {"type": "string", "enum": CAPABILITY_ADJUSTMENTS}},
-        "result": {"type": "integer", "minimum": 1, "maximum": 10},
-    },
-    "required": ["gap_points", "band", "adjustments", "result"],
-}
 
 # --- deep-v4: screening method (archive/briefs/2026-10-01-method-design/outputs/screening_method.md)
 SCREEN_SIGNALS = ("title", "keywords", "years", "education", "domain", "results")
@@ -132,8 +97,35 @@ SCREEN_CHECK = {
                  "signals", "adjustments", "caps", "binding"],
 }
 
-# Field order is the order of work (prompts/deep_eval.md): capability analysis -> capability number ->
-# CV recipe -> screen check -> objection -> rationales -> scores -> pitch -> verdict.
+# --- deep-v5: apply decision (archive/briefs/2026-10-08-apply-decision/outputs/)
+BIG_NO_RULES = ["none", "B1_dealbreaker", "B2_out_family", "B3_blocker_skill",
+                "B4_prior_role", "B5_years_cap", "B6_eligibility"]  # B7 (far-fetched) is set by code
+DECISIONS = ["strong_apply", "apply", "long_shot", "big_no"]
+
+_PRIMARY = {
+    "type": "object",
+    "properties": {
+        "activity": {"type": "string"},            # verb + object; "(inferred)" if thin
+        "candidate_evidence": {"type": "string"},  # "<source>: <pointer>" or "none"
+        "status": {"type": "string", "enum": ["met", "partial", "absent"]},
+    },
+    "required": ["activity", "candidate_evidence", "status"],
+}
+
+_REQUIREMENT = {
+    "type": "object",
+    "properties": {
+        "requirement": {"type": "string"},
+        "kind": {"type": "string", "enum": ["activity", "skill", "tool", "domain", "years",
+                                            "degree", "practice", "eligibility"]},
+        "evidence": {"type": "string"},            # candidate side, <= 20 words
+        "gap": {"type": "string", "enum": ["none", "learnable", "risk", "cap", "blocker"]},
+    },
+    "required": ["requirement", "kind", "evidence", "gap"],
+}
+
+# Field order is the order of work (prompts/deep_eval.md): read the posting -> big-no checks ->
+# desire -> decision and reason line -> CV recipe -> screen check -> objection -> screen score -> pitch.
 DEEP_SCHEMA = {
     "type": "object",
     "properties": {
@@ -143,34 +135,48 @@ DEEP_SCHEMA = {
                 "role_summary": {"type": "string"},
                 "real_problem": {"type": "string"},
                 "seniority_signal": {"type": "string"},
-                "gate": _GATE,
-                "must_haves": {"type": "array", "items": _MUST},
-                "nice_to_haves": {"type": "array", "items": _REQ},
+                "primary_activity": _PRIMARY,
+                "requirements": {"type": "array", "maxItems": 6, "items": _REQUIREMENT},
+                "nice_to_haves": {"type": "array", "maxItems": 4, "items": _REQ},
             },
-            "required": ["role_summary", "real_problem", "seniority_signal", "gate", "must_haves",
-                         "nice_to_haves"],
+            "required": ["role_summary", "real_problem", "seniority_signal", "primary_activity",
+                         "requirements", "nice_to_haves"],
         },
-        "capability_calc": _CAP_CALC,
+        "big_no_check": {
+            "type": "object",
+            "properties": {
+                "rule": {"type": "string", "enum": BIG_NO_RULES},
+                "evidence": {"type": "string"},    # posting words + profile line / rating reason
+            },
+            "required": ["rule", "evidence"],
+        },
         "red_flags": {"type": "array", "items": {"type": "string"}},
+        "desire": {
+            "type": "object",
+            "properties": {"rationale": {"type": "string"}, "score": _SCORE},
+            "required": ["rationale", "score"],
+        },
+        "risk_points": {"type": "integer", "minimum": 0},
+        "apply_decision": {"type": "string", "enum": DECISIONS},
+        "reason_line": {"type": "string"},
         "cv_tailoring": CV_TAILORING,
         "screen_check": SCREEN_CHECK,
         "recruiter_objection": {"type": "string"},
         "score_rationale": {
             "type": "object",
-            "properties": {"capability": {"type": "string"}, "desire": {"type": "string"},
-                           "screen_pass": {"type": "string"}},
-            "required": ["capability", "desire", "screen_pass"],
+            "properties": {"screen_pass": {"type": "string"}},
+            "required": ["screen_pass"],
         },
         "scores": {
             "type": "object",
-            "properties": {"capability": _SCORE, "desire": _SCORE, "screen_pass": _SCORE},
-            "required": ["capability", "desire", "screen_pass"],
+            "properties": {"screen_pass": _SCORE},
+            "required": ["screen_pass"],
         },
         "pitch": {"type": "string"},
-        "verdict": {"type": "string", "enum": ["strong", "good", "stretch", "no"]},
     },
-    "required": ["job_analysis", "capability_calc", "red_flags", "cv_tailoring", "screen_check",
-                 "recruiter_objection", "score_rationale", "scores", "pitch", "verdict"],
+    "required": ["job_analysis", "big_no_check", "red_flags", "desire", "risk_points", "apply_decision",
+                 "reason_line", "cv_tailoring", "screen_check", "recruiter_objection", "score_rationale",
+                 "scores", "pitch"],
 }
 
 PROBE_SCHEMA = {"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"]}

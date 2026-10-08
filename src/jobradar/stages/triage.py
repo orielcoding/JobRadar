@@ -102,6 +102,9 @@ class TriageStage:
                     if j["attempts"] + 1 >= MAX_ATTEMPTS:
                         store.set_status(j["id"], Status.ERROR, "triage: model never returned a verdict")
                     continue
+                if r.get("rule") not in (None, "none"):  # triage-v3: a named big-no rule means "no"
+                    r["verdict"] = "no"
+                    stats.setdefault("rules", {})[r["rule"]] = stats.get("rules", {}).get(r["rule"], 0) + 1
                 store.add_evaluation(j["id"], "triage", r, res.model, version, res.meta, ctx.run_id)
                 verdict = r["verdict"]
                 stats[verdict] += 1

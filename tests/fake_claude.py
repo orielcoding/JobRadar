@@ -39,12 +39,12 @@ if mode == "error":
 if "results" in props:
     import re
     ids = re.findall(r'<job id="(\d+)">', user)
-    data = {"results": [{"job_id": i, "verdict": "yes", "reason": "fake"} for i in ids]}
+    data = {"results": [{"job_id": i, "rule": "none", "reason": "fake", "verdict": "yes"} for i in ids]}
 elif "scores" in props:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
     from jobradar.llm.fake import fake_deep_result
     data = fake_deep_result("fake", 8, desire=7, screen=4)
-    data["job_analysis"]["must_haves"][0].update({"requirement": "Python", "evidence": "CV"})
+    data["job_analysis"]["requirements"][0].update({"requirement": "Python", "evidence": "CV"})
 else:
     data = {"ok": True}
 

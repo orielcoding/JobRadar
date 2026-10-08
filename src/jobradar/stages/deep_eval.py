@@ -1,15 +1,17 @@
 """Stage 3 - deep evaluation: one strong-model call per job.
 
-The prompt (prompts/deep_eval.md, deep-v4) makes the model work in this order:
-  1. gate (scope / profession), then must-haves with weight and gap -> capability by a fixed table
-  2. desire, red flags
-  3. the CV recipe from the master CV, then the screen check on that page -> screen_pass
-  4. the recruiter objection (the binding screen constraint), rationales, scores, pitch, verdict
-Code (jobradar.scoring) recomputes capability and screen_pass from the model's own
-fields (mismatches are recorded) and takes the verdict from the fixed rule.
+The prompt (prompts/deep_eval.md, deep-v5) asks "is this posting worth applying to?":
+  1. read the posting: primary activity, firm requirements, seniority
+  2. big-no checks (dealbreaker, out family, central blocker skill, prior-role gate, years cap, eligibility)
+  3. gap per requirement (none / learnable / risk / cap / blocker), desire
+  4. apply_decision (strong_apply / apply / long_shot / big_no) and a one-line reason
+  5. the CV recipe and the screen check on that page -> screen_pass, objection, pitch
+Code (jobradar.scoring) recomputes the decision from the model's own fields (mismatches
+are recorded) and derives a 1-10 fit score for display and ranking. deep-v4 rows
+(capability / verdict) stay readable.
 
-The notify decision is made here in CODE from the scores (config thresholds),
-not by the model - so you can tune it without touching prompts.
+The notify decision is made here in CODE from the decision and desire (config
+thresholds), not by the model - so you can tune it without touching prompts.
 """
 
 from __future__ import annotations
@@ -23,12 +25,13 @@ from jobradar.llm import LLMError, UsageLimitReached
 from jobradar.llm.schemas import DEEP_SCHEMA
 from jobradar.models import Status
 from jobradar.prompts import load_prompt
-from jobradar.scoring import (advice_for, capability_from_analysis, screen_from_check,
-                              verdict_for)
+from jobradar.scoring import (advice_for, big_no_rule, capability_from_analysis, decision_for,
+                              fit_score, is_v5, risk_points_for, screen_from_check, verdict_for)
 from jobradar.textutil import truncate
 
 log = logging.getLogger(__name__)
 MAX_ATTEMPTS = 3
+_TIER = {"strong_apply": 30, "apply": 20, "long_shot": 10, "big_no": 0}
 
 
 def decide(result: dict, cfg, favorite: bool = False) -> dict:
@@ -38,9 +41,13 @@ def decide(result: dict, cfg, favorite: bool = False) -> dict:
     if favorite:  # ⭐ companies get their own, lower bar (config.yaml › favorites)
         fav = cfg.get("favorites") or {}
         t.update({k: fav[k] for k in ("min_capability", "min_desire", "notify_verdicts") if k in fav})
-    notify = (result.get("verdict") in t["notify_verdicts"]
-              and cap >= t["min_capability"] and des >= t["min_desire"])
-    rank = cap * 2 + des + scr  # for ordering pings; capability weighs double
+    v5 = is_v5(result)
+    notify = (result.get("verdict") in t["notify_verdicts"] and des >= t["min_desire"]
+              and (v5 or cap >= t.get("min_capability", 0)))
+    if v5:  # decision tier first, then desire and screen
+        rank = _TIER.get(result.get("verdict"), 0) + des + scr
+    else:
+        rank = cap * 2 + des + scr  # deep-v4: capability weighs double
     if favorite:
         rank += int((cfg.get("favorites") or {}).get("rank_bonus", 0))
     advice = advice_for(result, int(t["cv_gap_flag"]))
@@ -49,8 +56,26 @@ def decide(result: dict, cfg, favorite: bool = False) -> dict:
 
 
 def apply_method_checks(result: dict, job_id=None) -> None:
-    """Recompute the method's arithmetic (jobradar.scoring) and fix the verdict by rule.
-    The model's scores are kept; mismatches are recorded in result['checks']."""
+    """Recompute the method's arithmetic (jobradar.scoring) and fix the decision by rule.
+    deep-v5: `verdict` = the apply decision, `scores.desire` / `scores.capability` (fit score)
+    are filled so older readers keep working. Mismatches are recorded in result['checks']."""
+    if is_v5(result):
+        scores = result.setdefault("scores", {})
+        scores["desire"] = (result.get("desire") or {}).get("score")
+        scores["capability"] = fit_score(result)
+        checks = {"risk_points": risk_points_for(result), "screen_pass": screen_from_check(result)}
+        if checks["risk_points"] != result.get("risk_points"):
+            log.info("method check #%s: model risk_points=%s, recomputed %s",
+                     job_id, result.get("risk_points"), checks["risk_points"])
+        rule = decision_for(result)
+        if rule != result.get("apply_decision"):
+            checks["decision_model"] = result.get("apply_decision")
+            log.info("method check #%s: model decision=%s, rule %s", job_id, result.get("apply_decision"), rule)
+        if rule == "big_no" and big_no_rule(result) == "none":
+            checks["far_fetched"] = True  # B7: many risks and low desire
+        result["apply_decision"] = result["verdict"] = rule
+        result["checks"] = checks
+        return
     checks = {"capability": capability_from_analysis(result), "screen_pass": screen_from_check(result)}
     s = result.get("scores") or {}
     for k, v in checks.items():
@@ -106,13 +131,13 @@ def call_model(ctx, prep: dict):
 def finish_job(ctx, prep: dict, res, stage_name: str = "deep") -> dict:
     """Check the scores, decide, store the evaluation (main thread only)."""
     job, result = prep["job"], res.data
+    apply_method_checks(result, job["id"])
     scores = result.setdefault("scores", {})
     for k in ("capability", "desire", "screen_pass"):
         try:
             scores[k] = max(1, min(10, int(scores.get(k, 1))))
         except (TypeError, ValueError):
             scores[k] = 1
-    apply_method_checks(result, job["id"])
     result["decision"] = decide(result, ctx.config, prep["favorite"])
     ctx.store.add_evaluation(job["id"], stage_name, result, res.model, prep["version"], res.meta, ctx.run_id)
     return result

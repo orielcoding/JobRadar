@@ -405,9 +405,14 @@ class TestTechmapAndFavorites(unittest.TestCase):
     def test_favorite_thresholds(self):
         from jobradar.stages.deep_eval import decide
         cfg = Config(make_home())
-        ev = {"scores": {"capability": 6, "desire": 5, "screen_pass": 4}, "verdict": "stretch"}
-        self.assertFalse(decide(ev, cfg)["notify"])
+        ev = {"big_no_check": {"rule": "none"}, "scores": {"capability": 5, "desire": 6, "screen_pass": 4},
+              "verdict": "long_shot"}
+        self.assertFalse(decide(ev, cfg)["notify"])                  # long shots ping only for favorites
         self.assertTrue(decide(ev, cfg, favorite=True)["notify"])
+        ev["scores"]["desire"] = 5
+        self.assertFalse(decide(ev, cfg, favorite=True)["notify"])   # favorites' desire bar is 6
+        ev.update(verdict="apply")
+        self.assertTrue(decide(ev, cfg)["notify"])
 
 
 class TestCLI(unittest.TestCase):
@@ -638,14 +643,34 @@ class TestScoringMethod(unittest.TestCase):
         self.assertEqual(v(7, 7, 7, caps=["KO1"]), "no")
         self.assertEqual(v(3, 8, 5, gate="stop_scope"), "no")
 
-    def test_pipeline_applies_verdict_rule(self):
+    def test_pipeline_applies_decision_rule(self):
         from jobradar.llm.fake import fake_deep_result
         from jobradar.stages.deep_eval import apply_method_checks
         r = fake_deep_result("x", 8, desire=7, screen=2)
-        r["verdict"] = "strong"                    # model disagrees with the rule
+        r["apply_decision"] = "strong_apply"       # model disagrees with the rule (desire 7 < 8)
         apply_method_checks(r)
-        self.assertEqual(r["verdict"], "good")
-        self.assertEqual(r["checks"]["verdict_model"], "strong")
+        self.assertEqual((r["apply_decision"], r["verdict"]), ("apply", "apply"))
+        self.assertEqual(r["checks"]["decision_model"], "strong_apply")
+        self.assertEqual((r["scores"]["desire"], r["scores"]["capability"]), (7, 8))
+
+    def test_apply_decision_rule(self):
+        from jobradar.scoring import decision_for, fit_score
+
+        def ev(primary="met", gaps=(), desire=6, rule="none", activity="forecast demand"):
+            return {"job_analysis": {"primary_activity": {"status": primary, "activity": activity},
+                                     "requirements": [{"gap": g} for g in gaps]},
+                    "big_no_check": {"rule": rule}, "desire": {"score": desire}}
+        self.assertEqual(decision_for(ev(rule="B3_blocker_skill")), "big_no")
+        self.assertEqual(decision_for(ev(desire=8)), "strong_apply")
+        self.assertEqual(decision_for(ev(desire=8, activity="x (inferred)")), "apply")   # thin posting
+        self.assertEqual(decision_for(ev(gaps=("learnable", "learnable", "risk"))), "apply")
+        self.assertEqual(decision_for(ev(primary="partial", gaps=("risk",), desire=5)), "apply")
+        self.assertEqual(decision_for(ev(gaps=("cap",), desire=9)), "long_shot")         # non-central blocker
+        self.assertEqual(decision_for(ev(primary="absent", desire=7)), "long_shot")
+        self.assertEqual(decision_for(ev(primary="partial", gaps=("risk", "risk"), desire=4)), "big_no")  # B7
+        self.assertEqual(decision_for(ev(primary="partial", gaps=("risk", "risk", "risk"), desire=5)), "long_shot")
+        self.assertEqual(fit_score(ev(rule="B2_out_family")), 2)
+        self.assertEqual(fit_score(ev(primary="partial", gaps=("risk",) * 6)), 3)
 
 
 class TestDedupeLocation(unittest.TestCase):
